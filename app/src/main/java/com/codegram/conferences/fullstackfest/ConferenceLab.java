@@ -16,12 +16,14 @@ public class ConferenceLab {
     private ConferenceLab(Context appContext) {
         mAppContext = appContext;
         mConferences = new ArrayList<Conference>();
-        Conference c1 = new Conference();
-        c1.setTitle("Barcelona Ruby Conference");
-        mConferences.add(c1);
-        Conference c2 = new Conference();
-        c2.setTitle("FutureJS");
-        mConferences.add(c2);
+
+        Conference conference = new Conference();
+        conference.setTitle("Barcelona Ruby Conference");
+        mConferences.add(conference);
+
+        conference = new Conference();
+        conference.setTitle("FutureJS");
+        mConferences.add(conference);
     }
 
     public static ConferenceLab get(Context context) {
