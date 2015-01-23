@@ -5,11 +5,11 @@ import java.util.UUID;
 /**
  * Created by marc on 1/23/15.
  */
-public class Conference {
+public class Talk {
     private UUID mId;
     private String mTitle;
 
-    public Conference() {
+    public Talk() {
         mId = UUID.randomUUID();
     }
 

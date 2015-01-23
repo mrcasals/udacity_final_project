@@ -1,16 +1,10 @@
 package com.codegram.conferences.fullstackfest;
 
-import android.app.Activity;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,18 +18,18 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ConferenceListFragment extends ListFragment {
+public class TalkListFragment extends ListFragment {
 
-    private ArrayList<Conference> mConferences;
+    private ArrayList<Talk> mTalks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.app_name);
+        getActivity().setTitle(R.string.talks_activity_title);
 
-        mConferences = ConferenceLab.get(getActivity()).getConferences();
+        mTalks = TalkLab.get(getActivity()).getTalks();
 
-        ConferenceAdapter adapter = new ConferenceAdapter(mConferences);
+        ConferenceAdapter adapter = new ConferenceAdapter(mTalks);
         setListAdapter(adapter);
     }
 
@@ -45,23 +39,23 @@ public class ConferenceListFragment extends ListFragment {
         ((ConferenceAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
-    private class ConferenceAdapter extends ArrayAdapter<Conference> {
-        public ConferenceAdapter(ArrayList<Conference> conferences) {
+    private class ConferenceAdapter extends ArrayAdapter<Talk> {
+        public ConferenceAdapter(ArrayList<Talk> talks) {
             // required to properly hook up your dataset of Crimes
             // 0 because we are not using a predefined layout, so 0 is OK
-            super(getActivity(), 0, conferences);
+            super(getActivity(), 0, talks);
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
                 convertView = getActivity().getLayoutInflater()
-                    .inflate(R.layout.list_item_conference, null);
+                    .inflate(R.layout.list_item_talk, null);
             }
 
-            Conference conference = getItem(position);
+            Talk talk = getItem(position);
             TextView titleTextView =
-                    (TextView)convertView.findViewById(R.id.conference_list_item_title);
-            titleTextView.setText(conference.getTitle());
+                    (TextView)convertView.findViewById(R.id.talk_list_item_title);
+            titleTextView.setText(talk.getTitle());
             return convertView;
         }
     }
