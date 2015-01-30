@@ -32,6 +32,8 @@ public abstract class SingleFragmentActivity extends ActionBarActivity {
                 R.layout.drawer_list_item, mLeftMenuItems));
         // Set the list's click listener
         // mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
