@@ -1,6 +1,8 @@
-package com.codegram.conferences.fullstackfest;
+package com.codegram.conferences.fullstackfest.labs;
 
 import android.content.Context;
+
+import com.codegram.conferences.fullstackfest.models.Talk;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -17,12 +19,10 @@ public class TalkLab {
         mAppContext = appContext;
         mTalks = new ArrayList<Talk>();
 
-        Talk talk = new Talk();
-        talk.setTitle("Inspecting ActiveRecord model relations with d3.js");
+        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", 1);
         mTalks.add(talk);
 
-        talk = new Talk();
-        talk.setTitle("Awesome talk");
+        talk = new Talk(2, "Awesome talk", 2);
         mTalks.add(talk);
     }
 
@@ -36,9 +36,9 @@ public class TalkLab {
         return mTalks;
     }
 
-    public Talk getTalk(UUID id) {
+    public Talk getTalk(int id) {
         for (Talk talk : mTalks) {
-            if (talk.getId().equals(id))
+            if (talk.getId() == id)
                 return talk;
         }
         return null;
