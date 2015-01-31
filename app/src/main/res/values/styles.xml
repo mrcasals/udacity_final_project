@@ -5,6 +5,7 @@
         <item name="colorPrimary">#8bc34a</item>
         <item name="colorPrimaryDark">#558b2f</item>
         <item name="colorAccent">#FFFFFF</item>
+        <item name="drawerType">@integer/DRAWERTYPE_IMAGE</item>
     </style>
 
 </resources>
