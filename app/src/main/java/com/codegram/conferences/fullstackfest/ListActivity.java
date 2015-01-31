@@ -36,5 +36,7 @@ public class ListActivity extends MaterialNavigationDrawer {
         //create sections
         this.addSection(newSection("Sponsors", new TalkListFragment()).setSectionColor(Color.parseColor("#cddc39")));
         this.addSection(newSection("Map", new SpeakerListFragment()).setSectionColor(Color.parseColor("#ff9800")));
+
+        this.addBottomSection(newSection("About", new SpeakerListFragment()).setSectionColor(Color.parseColor("#455A64")));
     }
 }
