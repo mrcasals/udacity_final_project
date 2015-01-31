@@ -12,6 +12,13 @@ public class ListActivity extends MaterialNavigationDrawer {
         // Set custom background image for the header
         this.setDrawerHeaderImage(R.drawable.mat3);
 
+        // Don't show the sidebar on app opening
+        this.disableLearningPattern();
+
+        // On back button, return to first section of the drawer. It's buggy right now:
+        // https://github.com/neokree/MaterialNavigationDrawer/issues/33#issuecomment-69727925
+        // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+
         // to disable the menu opening every time we open the app
         // this.disableLearningPattern();
 
@@ -21,10 +28,10 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         // ---------------------------------------------------
         // set a subheader
-        this.addSubheader("Subheader 2");
+        this.addSubheader("Subheader");
 
         //create sections
-        this.addSection(newSection("Schedule", new TalkListFragment()).setSectionColor(Color.parseColor("#9c27b0")));
-        this.addSection((newSection("Speakers", new SpeakerListFragment())).setSectionColor(Color.parseColor("#03a9f4")));
+        this.addSection(newSection("Sponsors", new TalkListFragment()).setSectionColor(Color.parseColor("#cddc39")));
+        this.addSection((newSection("Map", new SpeakerListFragment())).setSectionColor(Color.parseColor("#ff9800")));
     }
 }
