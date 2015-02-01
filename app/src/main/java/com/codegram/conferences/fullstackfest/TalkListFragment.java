@@ -1,10 +1,12 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
@@ -40,6 +42,19 @@ public class TalkListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // We get the talk we've clicked on
+        Talk talk = ((TalkListAdapter)getListAdapter()).getItem(position);
+
+        // We create an Intent to link the current activity with the details one
+        Intent intent = new Intent(getActivity(), TalkActivity.class);
+        // As an extra, we put the ID of the talk we want to show
+        intent.putExtra(TalkFragment.EXTRA_TALK_ID, talk.getId());
+        // We start the other activity.
+        startActivity(intent);
     }
 
     private class TalkListAdapter extends ArrayAdapter<Talk> {
