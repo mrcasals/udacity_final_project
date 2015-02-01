@@ -22,9 +22,6 @@ public class ListActivity extends MaterialNavigationDrawer {
         // https://github.com/neokree/MaterialNavigationDrawer/issues/33#issuecomment-69727925
         // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
-        // to disable the menu opening every time we open the app
-        // this.disableLearningPattern();
-
         //create sections
         this.addSection(newSection("Schedule", new TalkListFragment()).setSectionColor(Color.parseColor("#9c27b0")));
         this.addSection(newSection("Speakers", new SpeakerListFragment()).setSectionColor(Color.parseColor("#03a9f4")));

@@ -32,18 +32,18 @@ public class TalkListFragment extends ListFragment {
 
         mTalks = TalkLab.get(getActivity()).getTalks();
 
-        ConferenceAdapter adapter = new ConferenceAdapter(mTalks);
+        TalkListAdapter adapter = new TalkListAdapter(mTalks);
         setListAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((ConferenceAdapter)getListAdapter()).notifyDataSetChanged();
+        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
-    private class ConferenceAdapter extends ArrayAdapter<Talk> {
-        public ConferenceAdapter(ArrayList<Talk> talks) {
+    private class TalkListAdapter extends ArrayAdapter<Talk> {
+        public TalkListAdapter(ArrayList<Talk> talks) {
             // required to properly hook up your dataset of Crimes
             // 0 because we are not using a predefined layout, so 0 is OK
             super(getActivity(), 0, talks);

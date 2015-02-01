@@ -8,9 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
-import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
-import com.codegram.conferences.fullstackfest.models.Talk;
 
 import java.util.ArrayList;
 
@@ -34,18 +32,18 @@ public class SpeakerListFragment extends ListFragment {
 
         mSpeakers = SpeakerLab.get(getActivity()).getSpeakers();
 
-        ConferenceAdapter adapter = new ConferenceAdapter(mSpeakers);
+        SpeakerListAdapter adapter = new SpeakerListAdapter(mSpeakers);
         setListAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((ConferenceAdapter)getListAdapter()).notifyDataSetChanged();
+        ((SpeakerListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
-    private class ConferenceAdapter extends ArrayAdapter<Speaker> {
-        public ConferenceAdapter(ArrayList<Speaker> speakers) {
+    private class SpeakerListAdapter extends ArrayAdapter<Speaker> {
+        public SpeakerListAdapter(ArrayList<Speaker> speakers) {
             // required to properly hook up your dataset of Crimes
             // 0 because we are not using a predefined layout, so 0 is OK
             super(getActivity(), 0, speakers);
