@@ -1,11 +1,16 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.codegram.conferences.fullstackfest.labs.TalkLab;
+import com.codegram.conferences.fullstackfest.models.Talk;
 
 import java.util.ArrayList;
 
@@ -25,22 +30,35 @@ public class TalkListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.talks_activity_title);
+        //getActivity().setTitle(R.string.talks_activity_title);
 
         mTalks = TalkLab.get(getActivity()).getTalks();
 
-        ConferenceAdapter adapter = new ConferenceAdapter(mTalks);
+        TalkListAdapter adapter = new TalkListAdapter(mTalks);
         setListAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((ConferenceAdapter)getListAdapter()).notifyDataSetChanged();
+        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
-    private class ConferenceAdapter extends ArrayAdapter<Talk> {
-        public ConferenceAdapter(ArrayList<Talk> talks) {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // We get the talk we've clicked on
+        Talk talk = ((TalkListAdapter)getListAdapter()).getItem(position);
+
+        // We create an Intent to link the current activity with the details one
+        Intent intent = new Intent(getActivity(), TalkActivity.class);
+        // As an extra, we put the ID of the talk we want to show
+        intent.putExtra(TalkFragment.EXTRA_TALK_ID, talk.getId());
+        // We start the other activity.
+        startActivity(intent);
+    }
+
+    private class TalkListAdapter extends ArrayAdapter<Talk> {
+        public TalkListAdapter(ArrayList<Talk> talks) {
             // required to properly hook up your dataset of Crimes
             // 0 because we are not using a predefined layout, so 0 is OK
             super(getActivity(), 0, talks);
