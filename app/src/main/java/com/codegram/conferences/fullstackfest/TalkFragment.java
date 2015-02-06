@@ -1,5 +1,6 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.codegram.conferences.fullstackfest.models.Talk;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TalkFragment.OnFragmentInteractionListener} interface
+ * TalkFragment.OnFragmentInteractionListener interface
  * to handle interaction events.
  * Use the {@link TalkFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -46,6 +47,15 @@ public class TalkFragment extends Fragment {
         int talkId = (int)getArguments().getSerializable(EXTRA_TALK_ID);
 
         mTalk = TalkLab.get(getActivity()).getTalk(talkId);
+
+        int color;
+        if(talkId % 2 == 0) {
+            color = Color.parseColor("#009688");
+        } else {
+            color = Color.parseColor("#FFC107");
+        }
+
+        ((SingleFragmentActivity)getActivity()).setToolbarColor(color);
     }
 
     @Override

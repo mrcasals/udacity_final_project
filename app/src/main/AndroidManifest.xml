@@ -19,6 +19,9 @@
         <activity
             android:name=".TalkActivity"
             android:label="@string/title_activity_tasks" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codegram.conferences.fullstackfest.ListActivity" />
         </activity>
     </application>
 
