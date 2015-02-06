@@ -19,10 +19,10 @@ public class TalkLab {
         mAppContext = appContext;
         mTalks = new ArrayList<Talk>();
 
-        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", 1);
+        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", "DEsc 1", 1);
         mTalks.add(talk);
 
-        talk = new Talk(2, "Awesome talk", 2);
+        talk = new Talk(2, "Awesome talk", "Desc 2", 2);
         mTalks.add(talk);
     }
 
@@ -42,5 +42,9 @@ public class TalkLab {
                 return talk;
         }
         return null;
+    }
+
+    public void setCollection(ArrayList<Talk> talks) {
+        mTalks = talks;
     }
 }

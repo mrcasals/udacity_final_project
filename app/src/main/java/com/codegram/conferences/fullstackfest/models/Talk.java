@@ -9,11 +9,13 @@ public class Talk {
     private int mId;
     private String mTitle;
     private int mSpeakerId;
+    private String mDescription;
 
-    public Talk(int id, String title, int speakerId) {
+    public Talk(int id, String title, String description, int speakerId) {
         mId = id;
         mTitle = title;
         mSpeakerId = speakerId;
+        mDescription = description;
     }
 
     public int getId() {
@@ -25,4 +27,8 @@ public class Talk {
     }
 
     public int getSpeakerId() { return mSpeakerId; }
+
+    public String getDescription() {
+        return mDescription;
+    }
 }

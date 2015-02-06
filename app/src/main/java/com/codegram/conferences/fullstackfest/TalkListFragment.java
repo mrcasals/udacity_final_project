@@ -3,6 +3,7 @@ package com.codegram.conferences.fullstackfest;
 import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Talk;
+import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 public class TalkListFragment extends ListFragment {
 
     private ArrayList<Talk> mTalks;
+    TalkListAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,14 +37,22 @@ public class TalkListFragment extends ListFragment {
 
         mTalks = TalkLab.get(getActivity()).getTalks();
 
-        TalkListAdapter adapter = new TalkListAdapter(mTalks);
-        setListAdapter(adapter);
+        Log.d("Bla ", Integer.toString(mTalks.size()));
+
+        mAdapter = new TalkListAdapter(mTalks);
+        setListAdapter(mAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateRemoteData();
     }
 
     @Override
@@ -55,6 +66,11 @@ public class TalkListFragment extends ListFragment {
         intent.putExtra(TalkFragment.EXTRA_TALK_ID, talk.getId());
         // We start the other activity.
         startActivity(intent);
+    }
+
+    private void updateRemoteData() {
+        FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
+        fetchDataTask.execute();
     }
 
     private class TalkListAdapter extends ArrayAdapter<Talk> {
