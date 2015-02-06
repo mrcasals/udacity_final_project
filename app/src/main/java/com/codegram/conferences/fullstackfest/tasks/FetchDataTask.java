@@ -27,9 +27,11 @@ import java.util.ArrayList;
 public class FetchDataTask extends AsyncTask<Void, Void, ArrayList<Talk>> {
     private final String LOG_TAG = FetchDataTask.class.getSimpleName();
     private Context mContext;
+    private ArrayAdapter<Talk> mAdapter;
 
-    public FetchDataTask(Context context) {
+    public FetchDataTask(Context context, ArrayAdapter<Talk> adapter) {
         mContext = context;
+        mAdapter = adapter;
     }
 
     @Override
@@ -60,6 +62,8 @@ public class FetchDataTask extends AsyncTask<Void, Void, ArrayList<Talk>> {
     @Override
     protected void onPostExecute(ArrayList<Talk> talks) {
         TalkLab.get(mContext).setCollection(talks);
+        mAdapter.clear();
+        mAdapter.addAll(talks);
     }
 
     private ArrayList<Talk> parseTalks(String jsonData)

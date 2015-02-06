@@ -35,7 +35,7 @@ public class TalkListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         //getActivity().setTitle(R.string.talks_activity_title);
 
-        mTalks = TalkLab.get(getActivity()).getTalks();
+        mTalks = new ArrayList<Talk>();
 
         Log.d("Bla ", Integer.toString(mTalks.size()));
 
@@ -69,8 +69,13 @@ public class TalkListFragment extends ListFragment {
     }
 
     private void updateRemoteData() {
-        FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
+        FetchDataTask fetchDataTask = new FetchDataTask(getActivity(), mAdapter);
         fetchDataTask.execute();
+        mTalks = TalkLab.get(getActivity()).getTalks();
+    }
+
+    public void updateTalks() {
+        mTalks = TalkLab.get(getActivity()).getTalks();
     }
 
     private class TalkListAdapter extends ArrayAdapter<Talk> {
