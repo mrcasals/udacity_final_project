@@ -74,10 +74,6 @@ public class TalkListFragment extends ListFragment {
         mTalks = TalkLab.get(getActivity()).getTalks();
     }
 
-    public void updateTalks() {
-        mTalks = TalkLab.get(getActivity()).getTalks();
-    }
-
     private class TalkListAdapter extends ArrayAdapter<Talk> {
         public TalkListAdapter(ArrayList<Talk> talks) {
             // required to properly hook up your dataset of Crimes
