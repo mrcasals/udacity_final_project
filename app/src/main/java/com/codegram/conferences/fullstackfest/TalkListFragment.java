@@ -76,7 +76,7 @@ public class TalkListFragment extends ListFragment {
 
     private class TalkListAdapter extends ArrayAdapter<Talk> {
         public TalkListAdapter(ArrayList<Talk> talks) {
-            // required to properly hook up your dataset of Crimes
+            // required to properly hook up your dataset of Talks
             // 0 because we are not using a predefined layout, so 0 is OK
             super(getActivity(), 0, talks);
         }
