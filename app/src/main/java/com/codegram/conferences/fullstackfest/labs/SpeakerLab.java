@@ -42,4 +42,8 @@ public class SpeakerLab {
         }
         return null;
     }
+
+    public void setCollection(ArrayList<Speaker> speakers) {
+        mSpeakers = speakers;
+    }
 }

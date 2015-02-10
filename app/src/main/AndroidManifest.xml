@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".TalkActivity"
-            android:label="@string/title_activity_tasks" >
+            android:label="@string/title_activity_talk" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codegram.conferences.fullstackfest.ListActivity" />

@@ -2,6 +2,7 @@ package com.codegram.conferences.fullstackfest.parsers;
 
 import android.util.Log;
 
+import com.codegram.conferences.fullstackfest.models.Speaker;
 import com.codegram.conferences.fullstackfest.models.Talk;
 
 import org.json.JSONArray;
@@ -16,11 +17,14 @@ import java.util.ArrayList;
 public class JSONDataParser {
     private final String LOG_TAG = JSONDataParser.class.getSimpleName();
     private ArrayList<Talk> mTalks;
+    private ArrayList<Speaker> mSpeakers;
     private String mJsonString;
     private final String JSON_EMBEDDED = "_embedded";
     private final String JSON_TALKS = "talks";
+    private final String JSON_SPEAKER = "speaker";
     private final String TALK_TITLE = "title";
     private final String TALK_DESCRIPTION = "description";
+    private final String SPEAKER_NAME = "name";
 
 
     public JSONDataParser(String jsonString) {
@@ -31,9 +35,14 @@ public class JSONDataParser {
         return mTalks;
     }
 
+    public ArrayList<Speaker> getSpeakers() {
+        return mSpeakers;
+    }
+
     public boolean parse() {
         try {
             parseTalks(mJsonString);
+            parseSpeakers(mJsonString);
             return true;
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -49,10 +58,10 @@ public class JSONDataParser {
         JSONObject embedded = json.getJSONObject(JSON_EMBEDDED);
         JSONArray talks = embedded.getJSONArray(JSON_TALKS);
 
-        ArrayList<Talk> parsedTalks = new ArrayList<Talk>();
+        mTalks = new ArrayList<Talk>();
 
         for(int i = 0; i < talks.length(); i++) {
-            int speakerId = (i % 2) + 1;
+            int speakerId = i + 1;
             String title;
             String description;
 
@@ -61,10 +70,28 @@ public class JSONDataParser {
             description = talk.getString(TALK_DESCRIPTION);
 
             Talk parsedTalk = new Talk(i + 1, title, description, speakerId);
-            parsedTalks.add(parsedTalk);
+            mTalks.add(parsedTalk);
         }
-        mTalks = parsedTalks;
     }
 
+    private void parseSpeakers(String jsonData)
+            throws JSONException {
 
+        JSONObject json = new JSONObject(jsonData);
+        JSONObject embedded = json.getJSONObject(JSON_EMBEDDED);
+        JSONArray talks = embedded.getJSONArray(JSON_TALKS);
+
+        mSpeakers = new ArrayList<Speaker>();
+
+        for(int i = 0; i < talks.length(); i++) {
+            String name;
+
+            JSONObject talk = talks.getJSONObject(i);
+            JSONObject speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONObject(JSON_SPEAKER);
+            name = speaker.getString(SPEAKER_NAME);
+
+            Speaker parsedSpeaker = new Speaker(i + 1, name);
+            mSpeakers.add(parsedSpeaker);
+        }
+    }
 }

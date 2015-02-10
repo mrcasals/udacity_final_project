@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Talk;
 import com.codegram.conferences.fullstackfest.parsers.JSONDataParser;
@@ -56,6 +57,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
     @Override
     protected void onPostExecute(JSONDataParser parser) {
         TalkLab.get(mContext).setCollection(parser.getTalks());
+        SpeakerLab.get(mContext).setCollection(parser.getSpeakers());
         mAdapter.clear();
         mAdapter.addAll(parser.getTalks());
     }
