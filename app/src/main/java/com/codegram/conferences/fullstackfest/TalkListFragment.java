@@ -1,6 +1,7 @@
 package com.codegram.conferences.fullstackfest;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,10 @@ import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
 import com.codegram.conferences.fullstackfest.models.Talk;
 import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
+import com.makeramen.RoundedImageView;
+import com.makeramen.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -31,6 +36,12 @@ public class TalkListFragment extends ListFragment {
 
     private ArrayList<Talk> mTalks;
     TalkListAdapter mAdapter;
+    private Transformation transformation = new RoundedTransformationBuilder()
+            .borderColor(Color.BLACK)
+            .borderWidthDp(1)
+            .cornerRadiusDp(90)
+            .oval(false)
+            .build();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,10 +109,18 @@ public class TalkListFragment extends ListFragment {
                     (TextView)convertView.findViewById(R.id.talk_list_item_secondary_1);
             TextView secondary2TextView =
                     (TextView)convertView.findViewById(R.id.talk_list_item_secondary_2);
+            RoundedImageView avatarView =
+                    (RoundedImageView)convertView.findViewById(R.id.talk_list_item_avatar);
 
             primaryTextView.setText(speaker.getName());
             secondaryTextView.setText(talk.getTitle());
             secondary2TextView.setText("9:00");
+
+            Picasso.with(getActivity())
+                    .load(speaker.getPictureUrl())
+                    .fit()
+                    .transform(transformation)
+                    .into(avatarView);
             return convertView;
         }
     }

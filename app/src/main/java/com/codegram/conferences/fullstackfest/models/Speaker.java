@@ -6,10 +6,12 @@ package com.codegram.conferences.fullstackfest.models;
 public class Speaker {
     private int mId;
     private String mName;
+    private String mPictureUrl;
 
-    public Speaker(int id, String name) {
+    public Speaker(int id, String name, String pictureUrl) {
         mId = id;
         mName = name;
+        mPictureUrl = pictureUrl;
     }
 
     public int getId() {
@@ -18,5 +20,9 @@ public class Speaker {
 
     public String getName() {
         return mName;
+    }
+
+    public String getPictureUrl() {
+        return mPictureUrl;
     }
 }
