@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
+import com.codegram.conferences.fullstackfest.models.Speaker;
 import com.codegram.conferences.fullstackfest.models.Talk;
 import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
 
@@ -88,9 +90,18 @@ public class TalkListFragment extends ListFragment {
             }
 
             Talk talk = getItem(position);
-            TextView titleTextView =
-                    (TextView)convertView.findViewById(R.id.talk_list_item_title);
-            titleTextView.setText(talk.getTitle());
+            Speaker speaker = SpeakerLab.get(getActivity()).getSpeaker(talk.getSpeakerId());
+
+            TextView primaryTextView =
+                    (TextView)convertView.findViewById(R.id.talk_list_item_primary);
+            TextView secondaryTextView =
+                    (TextView)convertView.findViewById(R.id.talk_list_item_secondary_1);
+            TextView secondary2TextView =
+                    (TextView)convertView.findViewById(R.id.talk_list_item_secondary_2);
+
+            primaryTextView.setText(speaker.getName());
+            secondaryTextView.setText(talk.getTitle());
+            secondary2TextView.setText("9:00");
             return convertView;
         }
     }
