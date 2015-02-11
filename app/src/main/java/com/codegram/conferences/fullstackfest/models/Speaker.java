@@ -24,5 +24,6 @@ public class Speaker {
 
     public String getPictureUrl() {
         return mPictureUrl;
+
     }
 }

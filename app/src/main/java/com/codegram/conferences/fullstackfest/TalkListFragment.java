@@ -116,6 +116,7 @@ public class TalkListFragment extends ListFragment {
             secondaryTextView.setText(talk.getTitle());
             secondary2TextView.setText("9:00");
 
+            avatarView.setImageDrawable(null);
             Picasso.with(getActivity())
                     .load(speaker.getPictureUrl())
                     .fit()

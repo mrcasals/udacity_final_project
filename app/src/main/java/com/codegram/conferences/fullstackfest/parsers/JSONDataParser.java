@@ -91,7 +91,12 @@ public class JSONDataParser {
             JSONObject talk = talks.getJSONObject(i);
             JSONObject speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONObject(JSON_SPEAKER);
             name = speaker.getString(SPEAKER_NAME);
-            pictureUrl = speaker.getString(SPEAKER_PICTURE);
+
+            if(speaker.isNull(SPEAKER_PICTURE)) {
+                pictureUrl = "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg";
+            } else {
+                pictureUrl = speaker.getString(SPEAKER_PICTURE);
+            }
 
             Speaker parsedSpeaker = new Speaker(i + 1, name, pictureUrl);
             mSpeakers.add(parsedSpeaker);
