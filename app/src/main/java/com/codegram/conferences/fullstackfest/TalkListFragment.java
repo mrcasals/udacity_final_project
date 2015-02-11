@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the OnFragmentInteractionListener
  * interface.
  */
 public class TalkListFragment extends ListFragment {
@@ -117,8 +117,10 @@ public class TalkListFragment extends ListFragment {
             secondary2TextView.setText("9:00");
 
             avatarView.setImageDrawable(null);
-            Picasso.with(getActivity())
-                    .load(speaker.getPictureUrl())
+            Picasso picasso = Picasso.with(getActivity());
+            //picasso.setIndicatorsEnabled(true); // Needs moving RoundedImageView to ImageView (also in layout)
+            //picasso.setLoggingEnabled(true);
+            picasso.load(speaker.getPictureUrl())
                     .fit()
                     .transform(transformation)
                     .into(avatarView);

@@ -24,6 +24,8 @@ public class JSONDataParser {
     private final String JSON_SPEAKER = "speaker";
     private final String TALK_TITLE = "title";
     private final String TALK_DESCRIPTION = "description";
+    private final String TALK_PICTURE = "picture";
+    private final String TALK_URL= "url";
     private final String SPEAKER_NAME = "name";
     private final String SPEAKER_PICTURE = "picture_big";
 
@@ -93,7 +95,7 @@ public class JSONDataParser {
             name = speaker.getString(SPEAKER_NAME);
 
             if(speaker.isNull(SPEAKER_PICTURE)) {
-                pictureUrl = "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg";
+                pictureUrl = talk.getJSONObject(TALK_PICTURE).getJSONObject(TALK_PICTURE).getString(TALK_URL);
             } else {
                 pictureUrl = speaker.getString(SPEAKER_PICTURE);
             }
