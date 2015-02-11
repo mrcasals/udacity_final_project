@@ -10,7 +10,7 @@ public class ListActivity extends MaterialNavigationDrawer {
     @Override
     public void init(Bundle savedInstanceState) {
         // Set custom background image for the header
-        this.setDrawerHeaderImage(R.drawable.mat3);
+        this.setDrawerHeaderImage(R.drawable.fsf);
 
         // Don't show the sidebar on app opening
         this.disableLearningPattern();
