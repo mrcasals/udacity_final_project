@@ -18,10 +18,10 @@ public class SpeakerLab {
         mAppContext = appContext;
         mSpeakers = new ArrayList<Speaker>();
 
-        Speaker speaker = new Speaker(1, "Aaron Patterson");
+        Speaker speaker = new Speaker(1, "Aaron Patterson", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg");
         mSpeakers.add(speaker);
 
-        speaker = new Speaker(2, "Sandi Metz");
+        speaker = new Speaker(2, "Sandi Metz", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg");
         mSpeakers.add(speaker);
     }
 
