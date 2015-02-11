@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
@@ -50,9 +51,9 @@ public class TalkFragment extends Fragment {
 
         int color;
         if(talkId % 2 == 0) {
-            color = Color.parseColor("#009688");
+            color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
         } else {
-            color = Color.parseColor("#FFC107");
+            color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
         }
 
         ((SingleFragmentActivity)getActivity()).setToolbarColor(color);
