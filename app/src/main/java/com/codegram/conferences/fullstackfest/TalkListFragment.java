@@ -81,6 +81,12 @@ public class TalkListFragment extends ListFragment {
         startActivity(intent);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setDivider(null);
+    }
+
     private void updateRemoteData() {
         FetchDataTask fetchDataTask = new FetchDataTask(getActivity(), mAdapter);
         fetchDataTask.execute();
