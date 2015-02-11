@@ -3,6 +3,8 @@ package com.codegram.conferences.fullstackfest;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
+
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class ListActivity extends MaterialNavigationDrawer {
@@ -23,8 +25,8 @@ public class ListActivity extends MaterialNavigationDrawer {
         // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
         //create sections
-        this.addSection(newSection("Schedule", new TalkListFragment()).setSectionColor(Color.parseColor("#9c27b0")));
-        this.addSection(newSection("Speakers", new SpeakerListFragment()).setSectionColor(Color.parseColor("#03a9f4")));
+        this.addSection(newSection("Schedule", new TalkListFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
+        this.addSection(newSection("Speakers", new SpeakerListFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR)));
 
         // ---------------------------------------------------
         // set a subheader

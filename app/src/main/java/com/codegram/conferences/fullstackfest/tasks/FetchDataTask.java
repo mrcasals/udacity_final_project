@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Talk;
@@ -34,8 +35,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
 
     @Override
     protected JSONDataParser doInBackground(Void... params) {
-        String url = "http://conferences.codegram.com/api/baruco2014/talks/";
-        HttpGet get = new HttpGet(url);
+        HttpGet get = new HttpGet(FullStackFestConfig.API_ENDPOINT);
         HttpClient client = new DefaultHttpClient();
         String jsonData = null;
         JSONDataParser parser;
