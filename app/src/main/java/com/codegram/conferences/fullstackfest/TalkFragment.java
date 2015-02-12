@@ -1,8 +1,11 @@
 package com.codegram.conferences.fullstackfest;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,19 +51,12 @@ public class TalkFragment extends Fragment {
         int talkId = (int)getArguments().getSerializable(EXTRA_TALK_ID);
 
         mTalk = TalkLab.get(getActivity()).getTalk(talkId);
-
-        int color;
-        if(talkId % 2 == 0) {
-            color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
-        } else {
-            color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
-        }
-
-        ((SingleFragmentActivity)getActivity()).setToolbarColor(color);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setActionBarBackgroundColor();
+
         View v = inflater.inflate(R.layout.fragment_talk, container, false);
 
         mTitleView = (TextView)v.findViewById(R.id.talk_title);
@@ -72,5 +68,16 @@ public class TalkFragment extends Fragment {
         mSpeakerName.setText(speaker.getName());
 
         return v;
+    }
+
+    private void setActionBarBackgroundColor() {
+        int color;
+        if(mTalk.getId() % 2 == 0) {
+            color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
+        } else {
+            color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
+        }
+
+        ((SingleFragmentActivity)getActivity()).setToolbarColor(color);
     }
 }

@@ -1,5 +1,6 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public abstract class SingleFragmentActivity extends ActionBarActivity{
     protected abstract Fragment createFragment();
