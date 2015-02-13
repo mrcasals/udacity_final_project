@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class TalkListFragment extends ListFragment {
 
-    private ArrayList<Talk> mTalks;
+    private ArrayList<Talk> mTalks = new ArrayList<Talk>();
     TalkListAdapter mAdapter;
     private Transformation transformation = new RoundedTransformationBuilder()
             .borderColor(Color.BLACK)
@@ -47,8 +47,6 @@ public class TalkListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getActivity().setTitle(R.string.talks_activity_title);
-
-        mTalks = new ArrayList<Talk>();
 
         mAdapter = new TalkListAdapter(mTalks);
         setListAdapter(mAdapter);
