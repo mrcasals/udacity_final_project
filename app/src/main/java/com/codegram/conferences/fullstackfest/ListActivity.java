@@ -25,7 +25,7 @@ public class ListActivity extends MaterialNavigationDrawer {
         // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
         //create sections
-        this.addSection(newSection("Schedule", new TalkListFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
+        this.addSection(newSection("Schedule", new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
         this.addSection(newSection("Speakers", new SpeakerListFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR)));
 
         // ---------------------------------------------------
