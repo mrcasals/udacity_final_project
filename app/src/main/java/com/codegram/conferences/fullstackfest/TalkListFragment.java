@@ -50,8 +50,6 @@ public class TalkListFragment extends ListFragment {
 
         mTalks = new ArrayList<Talk>();
 
-        Log.d("Bla ", Integer.toString(mTalks.size()));
-
         mAdapter = new TalkListAdapter(mTalks);
         setListAdapter(mAdapter);
     }

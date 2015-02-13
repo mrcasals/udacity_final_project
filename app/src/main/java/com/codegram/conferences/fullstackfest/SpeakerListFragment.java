@@ -1,5 +1,6 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.graphics.Color;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,10 @@ import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
+import com.makeramen.RoundedImageView;
+import com.makeramen.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -24,6 +29,13 @@ import java.util.ArrayList;
 public class SpeakerListFragment extends ListFragment {
 
     private ArrayList<Speaker> mSpeakers;
+    private SpeakerListAdapter mAdapter;
+    private Transformation transformation = new RoundedTransformationBuilder()
+            .borderColor(Color.BLACK)
+            .borderWidthDp(1)
+            .cornerRadiusDp(90)
+            .oval(false)
+            .build();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,14 +44,20 @@ public class SpeakerListFragment extends ListFragment {
 
         mSpeakers = SpeakerLab.get(getActivity()).getSpeakers();
 
-        SpeakerListAdapter adapter = new SpeakerListAdapter(mSpeakers);
-        setListAdapter(adapter);
+        mAdapter = new SpeakerListAdapter(mSpeakers);
+        setListAdapter(mAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((SpeakerListAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setDivider(null);
     }
 
     private class SpeakerListAdapter extends ArrayAdapter<Speaker> {
@@ -56,9 +74,18 @@ public class SpeakerListFragment extends ListFragment {
             }
 
             Speaker speaker = getItem(position);
-            TextView titleTextView =
-                    (TextView)convertView.findViewById(R.id.speaker_list_item_name);
-            titleTextView.setText(speaker.getName());
+            TextView nameTextView =
+                    (TextView)convertView.findViewById(R.id.speaker_list_item_primary);
+            RoundedImageView avatarView =
+                    (RoundedImageView)convertView.findViewById(R.id.speaker_list_item_avatar);
+
+            nameTextView.setText(speaker.getName());
+            avatarView.setImageDrawable(null);
+            Picasso.with(getActivity())
+                    .load(speaker.getPictureUrl())
+                    .fit()
+                    .transform(transformation)
+                    .into(avatarView);
             return convertView;
         }
     }
