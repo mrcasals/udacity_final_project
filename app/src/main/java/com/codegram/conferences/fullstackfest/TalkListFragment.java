@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class TalkListFragment extends ListFragment {
 
-    private ArrayList<Talk> mTalks = new ArrayList<Talk>();
+    private ArrayList<Talk> mTalks;
     TalkListAdapter mAdapter;
     private Transformation transformation = new RoundedTransformationBuilder()
             .borderColor(Color.BLACK)
@@ -48,6 +48,8 @@ public class TalkListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         //getActivity().setTitle(R.string.talks_activity_title);
 
+        mTalks = TalkLab.get(getActivity()).getTalks();
+
         mAdapter = new TalkListAdapter(mTalks);
         setListAdapter(mAdapter);
     }
@@ -55,13 +57,15 @@ public class TalkListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
+        updateRemoteData();
+        mAdapter.notifyDataSetChanged();
+//        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        updateRemoteData();
+        //updateRemoteData();
     }
 
     @Override

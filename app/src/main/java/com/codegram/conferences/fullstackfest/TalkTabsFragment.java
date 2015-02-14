@@ -1,7 +1,9 @@
 package com.codegram.conferences.fullstackfest;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -23,8 +25,6 @@ import it.neokree.materialtabs.MaterialTabListener;
  * Activities that contain this fragment must implement the
  * {@link TalkTabsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TalkTabsFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class TalkTabsFragment extends Fragment implements MaterialTabListener {
     private ViewPager mPager;
@@ -39,7 +39,7 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
         mPager = (ViewPager) view.findViewById(R.id.viewpager );
 
         // init view pager
-        mPagerAdapter = new ViewPagerAdapter(this.getActivity().getSupportFragmentManager());
+        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -62,6 +62,9 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
         mTabHost.setPrimaryColor(actionBarColor);
         mTabHost.setAccentColor(Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR));
         mTabHost.setTextColor(Color.parseColor("#212121"));
+
+        // Ugly fix to get tabs view, otherwise it gets lost
+        new SetAdapterTask().execute();
 
         return view;
     }
@@ -110,5 +113,23 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
             return getCurrentTitle(position);
         }
 
+        // Ugly fix to get tabs view, otherwise it gets lost
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+            // do nothing here! no call to super.restoreState(state, loader);
+        }
+
+    }
+
+    // Ugly fix to get tabs view, otherwise it gets lost
+    private class SetAdapterTask extends AsyncTask<Void, Void, Void> {
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if(mPagerAdapter != null) mPager.setAdapter(mPagerAdapter);
+        }
     }
 }
