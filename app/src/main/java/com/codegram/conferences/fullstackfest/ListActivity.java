@@ -53,7 +53,10 @@ public class ListActivity extends MaterialNavigationDrawer {
     private Intent createMapIntent() {
         Intent mapIntent = new Intent(Intent.ACTION_VIEW);
         String location = FullStackFestConfig.LATLONG;
-        Uri geolocation = Uri.parse("geo:" + location).buildUpon().build();
+        String venueName = FullStackFestConfig.VENUE_NAME;
+        Uri geolocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location + "(" + venueName + ")")
+                .build();
         mapIntent.setData(geolocation);
         return mapIntent;
     }
