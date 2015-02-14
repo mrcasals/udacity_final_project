@@ -1,13 +1,18 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class ListActivity extends MaterialNavigationDrawer {
+    private final String LOG_TAG = ListActivity.class.getSimpleName();
+
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -34,8 +39,25 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         //create sections
         this.addSection(newSection("Sponsors", new TalkListFragment()).setSectionColor(Color.parseColor("#cddc39")));
-        this.addSection(newSection("Map", new SpeakerListFragment()).setSectionColor(Color.parseColor("#ff9800")));
+
+        Intent mapIntent = createMapIntent();
+        if(mapIntent.resolveActivity(getPackageManager()) != null) {
+            this.addSection(newSection("Map", mapIntent).setSectionColor(Color.parseColor("#ff9800")));
+        } else {
+            Log.d(LOG_TAG, "Couldn't call map intent, no map available");
+        }
 
         this.addBottomSection(newSection("About", new SpeakerListFragment()).setSectionColor(Color.parseColor("#455A64")));
+    }
+
+    private Intent createMapIntent() {
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        String location = FullStackFestConfig.LATLONG;
+        String venueName = FullStackFestConfig.VENUE_NAME;
+        Uri geolocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location + "(" + venueName + ")")
+                .build();
+        mapIntent.setData(geolocation);
+        return mapIntent;
     }
 }
