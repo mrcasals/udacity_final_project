@@ -28,6 +28,7 @@ public class JSONDataParser {
     private final String TALK_URL= "url";
     private final String SPEAKER_NAME = "name";
     private final String SPEAKER_PICTURE = "picture_big";
+    private final String SPEAKER_BIO = "bio";
 
 
     public JSONDataParser(String jsonString) {
@@ -89,6 +90,7 @@ public class JSONDataParser {
         for(int i = 0; i < talks.length(); i++) {
             String name;
             String pictureUrl;
+            String bio;
 
             JSONObject talk = talks.getJSONObject(i);
             JSONObject speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONObject(JSON_SPEAKER);
@@ -100,7 +102,9 @@ public class JSONDataParser {
                 pictureUrl = speaker.getString(SPEAKER_PICTURE);
             }
 
-            Speaker parsedSpeaker = new Speaker(i + 1, name, pictureUrl);
+            bio = speaker.getString(SPEAKER_BIO);
+
+            Speaker parsedSpeaker = new Speaker(i + 1, name, pictureUrl, bio);
             mSpeakers.add(parsedSpeaker);
         }
     }

@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
@@ -16,6 +18,7 @@ import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
 import com.codegram.conferences.fullstackfest.models.Talk;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,10 +70,29 @@ public class TalkFragment extends Fragment {
         mSpeakerName = (TextView)v.findViewById(R.id.speaker_name);
         mSpeakerName.setText(speaker.getName());
 
+        ImageView speakerAvatar = (ImageView)v.findViewById(R.id.talk_avatar);
+        Picasso picasso = Picasso.with(getActivity());
+        picasso.load(speaker.getPictureUrl())
+                .fit()
+                .into(speakerAvatar);
+
+        LinearLayout talkTitleData = (LinearLayout)v.findViewById(R.id.talk_title_data);
+        talkTitleData.setBackground(new ColorDrawable(getConfColor()));
+
+        TextView talkDescription = (TextView)v.findViewById(R.id.talk_description);
+        talkDescription.setText(mTalk.getDescription());
+
+        TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
+        speakerBio.setText(speaker.getBio());
+
         return v;
     }
 
     private void setActionBarBackgroundColor() {
+        ((SingleFragmentActivity)getActivity()).setToolbarColor(getConfColor());
+    }
+
+    private int getConfColor() {
         int color;
         if(mTalk.getId() % 2 == 0) {
             color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
@@ -78,6 +100,6 @@ public class TalkFragment extends Fragment {
             color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
         }
 
-        ((SingleFragmentActivity)getActivity()).setToolbarColor(color);
+        return color;
     }
 }
