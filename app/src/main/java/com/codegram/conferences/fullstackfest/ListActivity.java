@@ -26,7 +26,7 @@ public class ListActivity extends MaterialNavigationDrawer {
         //this.allowArrowAnimation();
 
         // On back button, return to first section of the drawer. It's buggy right now:
-        // https://github.com/neokree/MaterialNavigationDrawer/issues/33#issuecomment-69727925
+        // https://github.com/neokree/MaterialNavigationDrawer/issues/181
         // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
         //create sections
