@@ -58,8 +58,8 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
                             .setTabListener(this)
             );
         }
-        int actionBarColor = ((MaterialNavigationDrawer) getActivity()).getCurrentSection().getSectionColor();
-        mTabHost.setPrimaryColor(actionBarColor);
+
+        mTabHost.setPrimaryColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR));
         mTabHost.setAccentColor(Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR));
         mTabHost.setTextColor(Color.parseColor("#212121"));
 
