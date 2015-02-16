@@ -2,6 +2,8 @@ package com.codegram.conferences.fullstackfest;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +48,6 @@ public class TalkListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActivity().setTitle(R.string.talks_activity_title);
 
         mTalks = TalkLab.get(getActivity()).getTalks();
 
@@ -59,13 +60,11 @@ public class TalkListFragment extends ListFragment {
         super.onResume();
         updateRemoteData();
         mAdapter.notifyDataSetChanged();
-//        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //updateRemoteData();
     }
 
     @Override
@@ -77,8 +76,14 @@ public class TalkListFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), TalkActivity.class);
         // As an extra, we put the ID of the talk we want to show
         intent.putExtra(TalkFragment.EXTRA_TALK_ID, talk.getId());
+
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                        v.findViewById(R.id.talk_list_item_primary),   // The view which starts the transition
+                        getString(R.string.transition_talk_name)    // The transitionName of the view we’re transitioning to
+                );
         // We start the other activity.
-        startActivity(intent);
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 
     @Override

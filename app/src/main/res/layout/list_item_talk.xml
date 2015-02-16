@@ -22,7 +22,8 @@
         android:singleLine="true"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="Primary text"/>
+        android:text="Primary text"
+        android:transitionName="@string/transition_talk_name"/>
     <TextView
         android:id="@+id/talk_list_item_secondary_1"
         android:layout_width="wrap_content"
