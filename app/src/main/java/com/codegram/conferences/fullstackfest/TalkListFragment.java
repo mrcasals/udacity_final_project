@@ -46,7 +46,6 @@ public class TalkListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActivity().setTitle(R.string.talks_activity_title);
 
         mTalks = TalkLab.get(getActivity()).getTalks();
 
@@ -59,13 +58,11 @@ public class TalkListFragment extends ListFragment {
         super.onResume();
         updateRemoteData();
         mAdapter.notifyDataSetChanged();
-//        ((TalkListAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //updateRemoteData();
     }
 
     @Override
