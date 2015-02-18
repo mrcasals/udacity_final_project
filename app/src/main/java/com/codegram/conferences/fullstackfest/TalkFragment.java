@@ -58,7 +58,7 @@ public class TalkFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setActionBarBackgroundColor();
+        //setActionBarBackgroundColor();
 
         View v = inflater.inflate(R.layout.fragment_talk, container, false);
 
