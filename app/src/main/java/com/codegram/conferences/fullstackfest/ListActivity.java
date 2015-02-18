@@ -27,7 +27,7 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         // On back button, return to first section of the drawer. It's buggy right now:
         // https://github.com/neokree/MaterialNavigationDrawer/issues/181
-        // this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+        this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
         //create sections
         this.addSection(newSection("Schedule", new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));

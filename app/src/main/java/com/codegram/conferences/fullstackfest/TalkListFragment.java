@@ -63,11 +63,6 @@ public class TalkListFragment extends ListFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // We get the talk we've clicked on
         Talk talk = ((TalkListAdapter)getListAdapter()).getItem(position);
