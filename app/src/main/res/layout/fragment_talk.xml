@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="72dp"
             android:paddingEnd="16dp"
+            android:textStyle="bold"
             android:text="@string/hello_blank_fragment" />
 
         <TextView
