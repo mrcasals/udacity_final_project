@@ -74,6 +74,7 @@ public class TalkFragment extends Fragment {
         Picasso picasso = Picasso.with(getActivity());
         picasso.load(speaker.getPictureUrl())
                 .fit()
+                .centerCrop()
                 .into(speakerAvatar);
 
         LinearLayout talkTitleData = (LinearLayout)v.findViewById(R.id.talk_title_data);
