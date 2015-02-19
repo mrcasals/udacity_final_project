@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,10 +92,11 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         talkTitleData.setBackground(new ColorDrawable(getConfColor()));
 
         TextView talkDescription = (TextView)v.findViewById(R.id.talk_description);
-        talkDescription.setText(mTalk.getDescription());
+        talkDescription.setText(Html.fromHtml(mTalk.getDescription()));
 
         TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
-        speakerBio.setText(speaker.getBio());
+        speakerBio.setText(Html.fromHtml(speaker.getBio()));
+        speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
 
         mToolbarView = getActivity().findViewById(R.id.toolbar);
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getConfColor()));

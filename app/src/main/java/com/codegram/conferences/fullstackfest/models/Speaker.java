@@ -1,5 +1,7 @@
 package com.codegram.conferences.fullstackfest.models;
 
+import org.markdownj.MarkdownProcessor;
+
 /**
  * Created by marc on 1/30/15.
  */
@@ -29,6 +31,6 @@ public class Speaker {
     }
 
     public String getBio() {
-        return mBio;
+        return new MarkdownProcessor().markdown(mBio);
     }
 }

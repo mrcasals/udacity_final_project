@@ -1,5 +1,7 @@
 package com.codegram.conferences.fullstackfest.models;
 
+import org.markdownj.MarkdownProcessor;
+
 import java.util.UUID;
 
 /**
@@ -29,6 +31,6 @@ public class Talk {
     public int getSpeakerId() { return mSpeakerId; }
 
     public String getDescription() {
-        return mDescription;
+        return new MarkdownProcessor().markdown(mDescription);
     }
 }
