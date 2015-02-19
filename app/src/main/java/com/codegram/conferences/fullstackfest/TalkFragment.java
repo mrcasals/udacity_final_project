@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +44,11 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     private TextView mTitleView;
     private TextView mSpeakerName;
+    private TextView mTalkDescription;
+
+    private LinearLayout mTalkHeader;
+    private LinearLayout mTalkData;
+    private LinearLayout mTalkDetailsContainer;
 
     private View mImageView;
     private View mToolbarView;
@@ -73,6 +80,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         View v = inflater.inflate(R.layout.fragment_talk, container, false);
 
+        mTalkDetailsContainer = (LinearLayout)v.findViewById(R.id.talk_details_container);
+
         mTitleView = (TextView)v.findViewById(R.id.talk_title);
         mTitleView.setText(mTalk.getTitle());
 
@@ -88,11 +97,13 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
                 .centerCrop()
                 .into(speakerAvatar);
 
-        LinearLayout talkTitleData = (LinearLayout)v.findViewById(R.id.talk_title_data);
-        talkTitleData.setBackground(new ColorDrawable(getConfColor()));
+        mTalkHeader = (LinearLayout)v.findViewById(R.id.talk_header);
 
-        TextView talkDescription = (TextView)v.findViewById(R.id.talk_description);
-        talkDescription.setText(Html.fromHtml(mTalk.getDescription()));
+        mTalkData = (LinearLayout)v.findViewById(R.id.talk_title_data);
+        mTalkData.setBackground(new ColorDrawable(getConfColor()));
+
+        mTalkDescription = (TextView)v.findViewById(R.id.talk_description);
+        mTalkDescription.setText(Html.fromHtml(mTalk.getDescription()));
 
         TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
         speakerBio.setText(Html.fromHtml(speaker.getBio()));
@@ -104,7 +115,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mScrollView = (ObservableScrollView) v.findViewById(R.id.talk_scroll);
         mScrollView.setScrollViewCallbacks(this);
 
-        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height);
+        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+            getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
 
         return v;
     }
@@ -115,6 +127,10 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         //ViewHelper.setTranslationY(mImageView, scrollY / 2);
+
+        if(mTalk.getId() < 3)
+            handleTalkDetailsScroll(scrollY);
+
     }
 
     @Override
@@ -123,6 +139,20 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+    }
+
+    private void handleTalkDetailsScroll(int scrollY) {
+        if(scrollY > mParallaxImageHeight) {
+            //mTalkData.setTranslationY(getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material));
+            ((LinearLayout)mTalkData.getParent()).removeView(mTalkData);
+            ((LinearLayout)mToolbarView.getParent()).addView(mTalkData);
+            mTalkDetailsContainer.setTranslationY(mTalkData.getHeight());
+            mTalkDetailsContainer.set
+        } else {
+            ((LinearLayout)mTalkData.getParent()).removeView(mTalkData);
+            ((LinearLayout)mTalkHeader).addView(mTalkData);
+            mTalkDetailsContainer.setTranslationY(0);
+        }
     }
 
     private void setActionBarBackgroundColor() {
