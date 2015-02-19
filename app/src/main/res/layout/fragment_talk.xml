@@ -52,6 +52,8 @@
             android:paddingBottom="16dp"
             android:paddingStart="72dp"
             android:paddingEnd="16dp"
+            android:autoLink="web"
+            android:linksClickable="true"
             android:text="@string/hello_blank_fragment" />
 
         <include layout="@layout/separator" />
