@@ -1,5 +1,7 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/talk_scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.codegram.conferences.fullstackfest.TalkFragment">
@@ -100,4 +102,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

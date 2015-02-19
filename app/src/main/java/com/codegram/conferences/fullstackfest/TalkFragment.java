@@ -18,6 +18,10 @@ import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
 import com.codegram.conferences.fullstackfest.models.Talk;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -28,7 +32,7 @@ import com.squareup.picasso.Picasso;
  * Use the {@link TalkFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TalkFragment extends Fragment {
+public class TalkFragment extends Fragment implements ObservableScrollViewCallbacks {
     public static final String EXTRA_TALK_ID =
             "com.codegram.conferences.fullstackfest.talk_id";
 
@@ -36,6 +40,11 @@ public class TalkFragment extends Fragment {
 
     private TextView mTitleView;
     private TextView mSpeakerName;
+
+    private View mImageView;
+    private View mToolbarView;
+    private ObservableScrollView mScrollView;
+    private int mParallaxImageHeight;
 
     public static TalkFragment newInstance(int talkId) {
         Bundle args = new Bundle();
@@ -86,7 +95,31 @@ public class TalkFragment extends Fragment {
         TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
         speakerBio.setText(speaker.getBio());
 
+        mToolbarView = getActivity().findViewById(R.id.toolbar);
+        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getConfColor()));
+
+        mScrollView = (ObservableScrollView) v.findViewById(R.id.talk_scroll);
+        mScrollView.setScrollViewCallbacks(this);
+
+        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height);
+
         return v;
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        int baseColor = getConfColor();
+        float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
+        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+        //ViewHelper.setTranslationY(mImageView, scrollY / 2);
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
     }
 
     private void setActionBarBackgroundColor() {
