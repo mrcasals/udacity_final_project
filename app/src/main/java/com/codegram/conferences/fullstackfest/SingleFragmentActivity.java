@@ -43,7 +43,7 @@ public abstract class SingleFragmentActivity extends ActionBarActivity{
         mActionBar.setBackgroundDrawable(new ColorDrawable(color));
     }
 
-    private int getActivityLayoutId() {
+    protected int getActivityLayoutId() {
         return R.layout.activity_single_fragment;
     }
 
