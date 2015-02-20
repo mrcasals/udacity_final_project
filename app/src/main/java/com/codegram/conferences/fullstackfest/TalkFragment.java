@@ -147,7 +147,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
             ((LinearLayout)mTalkData.getParent()).removeView(mTalkData);
             ((LinearLayout)mToolbarView.getParent()).addView(mTalkData);
             mTalkDetailsContainer.setTranslationY(mTalkData.getHeight());
-            mTalkDetailsContainer.set
         } else {
             ((LinearLayout)mTalkData.getParent()).removeView(mTalkData);
             ((LinearLayout)mTalkHeader).addView(mTalkData);
