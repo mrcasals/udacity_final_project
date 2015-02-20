@@ -49,7 +49,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     private LinearLayout mTalkData;
     private LinearLayout mHeaderTalkDetails;
 
-    private View mImageView;
+    private ImageView mSpeakerAvatar;
     private View mToolbarView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
@@ -93,7 +93,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         // find other views
         mSpeakerName = (TextView)v.findViewById(R.id.speaker_name);
-        ImageView speakerAvatar = (ImageView)v.findViewById(R.id.talk_avatar);
+        mSpeakerAvatar = (ImageView)v.findViewById(R.id.talk_avatar);
         mTalkDescription = (TextView)v.findViewById(R.id.talk_description);
         TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
 
@@ -115,7 +115,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         picasso.load(speaker.getPictureUrl())
                 .fit()
                 .centerCrop()
-                .into(speakerAvatar);
+                .into(mSpeakerAvatar);
         mTalkDescription.setText(Html.fromHtml(mTalk.getDescription()));
         speakerBio.setText(Html.fromHtml(speaker.getBio()));
         speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
@@ -134,7 +134,9 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         int baseColor = getConfColor();
         float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
-        //ViewHelper.setTranslationY(mImageView, scrollY / 2);
+
+        // Speaker avatar parallax effect
+        mSpeakerAvatar.setTranslationY(scrollY / 2);
 
         handleTalkDetailsScroll(scrollY);
 
