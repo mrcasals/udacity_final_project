@@ -16,91 +16,105 @@
             android:id="@+id/talk_avatar"
             android:layout_width="match_parent"
             android:layout_height="200dp"/>
+
         <LinearLayout
-            android:id="@+id/talk_title_data"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:id="@+id/talk_header"
             android:layout_height="wrap_content"
-            android:background="#FFC107">
-            <TextView
-                android:id="@+id/talk_title"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/talk_title_data"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="72dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="20dp"
-                android:text="@string/hello_blank_fragment"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:transitionName="@string/transition_talk_name"/>
-            <TextView
-                android:id="@+id/talk_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="72dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:textSize="16sp"
-                android:text="DX, 10:00 - 11:00"/>
+                android:background="#FFC107">
+                <TextView
+                    android:id="@+id/talk_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="72dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/hello_blank_fragment"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:transitionName="@string/transition_talk_name"/>
+                <TextView
+                    android:id="@+id/talk_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="72dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    android:textSize="16sp"
+                    android:text="DX, 10:00 - 11:00"/>
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/talk_description"
+        <LinearLayout
+            android:id="@+id/talk_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="72dp"
-            android:paddingEnd="16dp"
-            android:autoLink="web"
-            android:linksClickable="true"
-            android:text="@string/hello_blank_fragment" />
+            android:orientation="vertical">
 
-        <include layout="@layout/separator" />
+            <TextView
+                android:id="@+id/talk_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text="@string/hello_blank_fragment" />
 
-        <!-- speaker -->
+            <include layout="@layout/separator" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="72dp"
-            android:paddingEnd="16dp"
-            android:text="Speaker"
-            android:textSize="20sp"/>
+            <!-- speaker -->
 
-        <TextView
-            android:id="@+id/speaker_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="72dp"
-            android:paddingEnd="16dp"
-            android:textStyle="bold"
-            android:text="@string/hello_blank_fragment" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:text="Speaker"
+                android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/speaker_bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:paddingStart="72dp"
-            android:paddingEnd="16dp"
-            android:text="@string/hello_blank_fragment" />
+            <TextView
+                android:id="@+id/speaker_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:textStyle="bold"
+                android:text="@string/hello_blank_fragment" />
 
-        <include layout="@layout/separator" />
+            <TextView
+                android:id="@+id/speaker_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:text="@string/hello_blank_fragment" />
 
-        <!-- more -->
+            <include layout="@layout/separator" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="72dp"
-            android:paddingEnd="16dp"
-            android:text="More"
-            android:textSize="20sp"/>
+            <!-- more -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:text="More"
+                android:textSize="20sp"/>
+        </LinearLayout>
 
     </LinearLayout>
 

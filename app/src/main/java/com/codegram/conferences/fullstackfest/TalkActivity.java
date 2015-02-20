@@ -11,5 +11,10 @@ public class TalkActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         int talkId = (int)getIntent()
                 .getSerializableExtra(TalkFragment.EXTRA_TALK_ID);
-        return TalkFragment.newInstance(talkId);    }
+        return TalkFragment.newInstance(talkId);
+    }
+
+    protected int getActivityLayoutId() {
+        return R.layout.activity_talk;
+    }
 }

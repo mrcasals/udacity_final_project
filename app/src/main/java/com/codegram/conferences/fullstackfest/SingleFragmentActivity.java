@@ -20,9 +20,9 @@ public abstract class SingleFragmentActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_fragment);
+        setContentView(getActivityLayoutId());
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.frame_container);
+        Fragment fragment = fm.findFragmentById(getFragmentViewId());
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,5 +41,13 @@ public abstract class SingleFragmentActivity extends ActionBarActivity{
 
     public void setToolbarColor(int color) {
         mActionBar.setBackgroundDrawable(new ColorDrawable(color));
+    }
+
+    protected int getActivityLayoutId() {
+        return R.layout.activity_single_fragment;
+    }
+
+    private int getFragmentViewId() {
+        return R.id.frame_container;
     }
 }

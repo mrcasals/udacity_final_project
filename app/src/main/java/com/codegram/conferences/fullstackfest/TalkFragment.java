@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,8 +44,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     private TextView mTitleView;
     private TextView mSpeakerName;
+    private TextView mTalkDescription;
 
-    private View mImageView;
+    private LinearLayout mTalkData;
+    private LinearLayout mHeaderTalkDetails;
+
+    private ImageView mSpeakerAvatar;
     private View mToolbarView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
@@ -73,38 +79,52 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         View v = inflater.inflate(R.layout.fragment_talk, container, false);
 
-        mTitleView = (TextView)v.findViewById(R.id.talk_title);
-        mTitleView.setText(mTalk.getTitle());
-
         Speaker speaker = SpeakerLab.get(getActivity()).getSpeaker(mTalk.getSpeakerId());
 
-        mSpeakerName = (TextView)v.findViewById(R.id.speaker_name);
-        mSpeakerName.setText(speaker.getName());
+        // find header talk details views
+        mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
+        LinearLayout headerTalkData = (LinearLayout)getActivity().findViewById(R.id.header_talk_title_data);
+        TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
+        //TextView headerTalkTime = (TextView)getActivity().findViewById(R.id.header_talk_time);
 
-        ImageView speakerAvatar = (ImageView)v.findViewById(R.id.talk_avatar);
+        // find talk details views
+        mTitleView = (TextView)v.findViewById(R.id.talk_title);
+        mTalkData = (LinearLayout)v.findViewById(R.id.talk_title_data);
+
+        // find other views
+        mSpeakerName = (TextView)v.findViewById(R.id.speaker_name);
+        mSpeakerAvatar = (ImageView)v.findViewById(R.id.talk_avatar);
+        mTalkDescription = (TextView)v.findViewById(R.id.talk_description);
+        TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
+
+
+        // find toolbar and scrollview
+        mToolbarView = getActivity().findViewById(R.id.toolbar);
+        mScrollView = (ObservableScrollView) v.findViewById(R.id.talk_scroll);
+
+        // fill views
+
+        mTitleView.setText(mTalk.getTitle());
+        headerTalkTitle.setText(mTalk.getTitle());
+
+        mTalkData.setBackground(new ColorDrawable(getConfColor()));
+        headerTalkData.setBackground(new ColorDrawable(getConfColor()));
+
+        mSpeakerName.setText(speaker.getName());
         Picasso picasso = Picasso.with(getActivity());
         picasso.load(speaker.getPictureUrl())
                 .fit()
                 .centerCrop()
-                .into(speakerAvatar);
-
-        LinearLayout talkTitleData = (LinearLayout)v.findViewById(R.id.talk_title_data);
-        talkTitleData.setBackground(new ColorDrawable(getConfColor()));
-
-        TextView talkDescription = (TextView)v.findViewById(R.id.talk_description);
-        talkDescription.setText(Html.fromHtml(mTalk.getDescription()));
-
-        TextView speakerBio = (TextView)v.findViewById(R.id.speaker_bio);
+                .into(mSpeakerAvatar);
+        mTalkDescription.setText(Html.fromHtml(mTalk.getDescription()));
         speakerBio.setText(Html.fromHtml(speaker.getBio()));
         speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mToolbarView = getActivity().findViewById(R.id.toolbar);
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getConfColor()));
-
-        mScrollView = (ObservableScrollView) v.findViewById(R.id.talk_scroll);
         mScrollView.setScrollViewCallbacks(this);
 
-        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height);
+        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+            getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
 
         return v;
     }
@@ -114,7 +134,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         int baseColor = getConfColor();
         float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
-        //ViewHelper.setTranslationY(mImageView, scrollY / 2);
+
+        // Speaker avatar parallax effect
+        mSpeakerAvatar.setTranslationY(scrollY / 2);
+
+        handleTalkDetailsScroll(scrollY);
+
     }
 
     @Override
@@ -123,6 +148,14 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+    }
+
+    private void handleTalkDetailsScroll(int scrollY) {
+        if(scrollY > mParallaxImageHeight) {
+            mHeaderTalkDetails.setVisibility(View.VISIBLE);
+        } else {
+            mHeaderTalkDetails.setVisibility(View.GONE);
+        }
     }
 
     private void setActionBarBackgroundColor() {
