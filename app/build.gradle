@@ -16,6 +16,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file("../debug.jks")
+            storePassword "android"
+            keyAlias "android"
+            keyPassword "android"
+        }
     }
 }
 
@@ -30,6 +42,10 @@ dependencies {
     compile 'it.neokree:MaterialTabs:0.11'
     compile 'com.makeramen:roundedimageview:1.5.0'
     compile 'com.squareup.picasso:picasso:2.4.0'
+<<<<<<< HEAD
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
     compile 'org.markdownj:markdownj-core:0.4'
+=======
+    compile 'com.google.android.gms:play-services-maps:6.5.87'
+>>>>>>> Add shared debug key
 }
