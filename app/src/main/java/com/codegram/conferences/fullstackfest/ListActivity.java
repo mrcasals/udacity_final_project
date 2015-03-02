@@ -8,11 +8,18 @@ import android.util.Log;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 public class ListActivity extends MaterialNavigationDrawer {
     private final String LOG_TAG = ListActivity.class.getSimpleName();
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+    }
 
     @Override
     public void init(Bundle savedInstanceState) {

@@ -42,6 +42,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codegram.conferences.fullstackfest.ListActivity" />
         </activity>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="@string/crashlytics_api_key" />
     </application>
 
 </manifest>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="maps_api_key">AIzaSyAqjIDLWlvEDl_AN9HxhJs9tGLpAAWMSZs</string>
+    <string name="crashlytics_api_key">3b98ce5b0b5c8e5c5d5ca35a955e5e5131c3ef49</string>
 </resources>
