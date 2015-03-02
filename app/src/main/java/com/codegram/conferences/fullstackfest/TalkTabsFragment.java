@@ -52,11 +52,11 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
 
         // insert all tabs from pagerAdapter data
         for (int i = 0; i < mPagerAdapter.getCount(); i++) {
-            mTabHost.addTab(
-                    mTabHost.newTab()
-                            .setText(mPagerAdapter.getPageTitle(i))
-                            .setTabListener(this)
-            );
+            MaterialTab tab = mTabHost.newTab()
+                    .setText(mPagerAdapter.getPageTitle(i))
+                    .setTabListener(this);
+            tab.getView().findViewById(R.id.reveal).setVisibility(View.GONE);
+            mTabHost.addTab(tab);
         }
 
         mTabHost.setPrimaryColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR));
