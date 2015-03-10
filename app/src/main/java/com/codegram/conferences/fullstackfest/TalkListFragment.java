@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -72,6 +71,7 @@ public class TalkListFragment extends ListFragment {
 
         // We start the other activity.
         startActivity(intent);
+        getActivity().overridePendingTransition(R.animator.push_up, R.animator.no_change);
     }
 
     @Override

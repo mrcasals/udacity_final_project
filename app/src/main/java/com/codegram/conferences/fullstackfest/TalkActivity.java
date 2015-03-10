@@ -14,6 +14,12 @@ public class TalkActivity extends SingleFragmentActivity {
         return TalkFragment.newInstance(talkId);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.animator.no_change, R.animator.push_down);
+    }
+
     protected int getActivityLayoutId() {
         return R.layout.activity_talk;
     }
