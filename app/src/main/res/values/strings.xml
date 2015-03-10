@@ -15,7 +15,4 @@
     </string-array>
 
     <string name="title_activity_talk">Talk</string>
-
-    <string name="transition_talk_name">transition_talk_name</string>
-
 </resources>
