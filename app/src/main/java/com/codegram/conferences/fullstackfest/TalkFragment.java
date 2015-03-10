@@ -107,8 +107,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mTitleView.setText(mTalk.getTitle());
         headerTalkTitle.setText(mTalk.getTitle());
 
-        mTalkData.setBackground(new ColorDrawable(getConfColor()));
-        headerTalkData.setBackground(new ColorDrawable(getConfColor()));
+        mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
+        headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
         mSpeakerName.setText(speaker.getName());
         Picasso picasso = Picasso.with(getActivity());
@@ -120,7 +120,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         speakerBio.setText(Html.fromHtml(speaker.getBio()));
         speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getConfColor()));
+        mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, FullStackFestConfig.getConfColor(mTalk)));
         mScrollView.setScrollViewCallbacks(this);
 
         mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
@@ -131,7 +131,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        int baseColor = getConfColor();
+        int baseColor = FullStackFestConfig.getConfColor(mTalk);
         float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
 
@@ -159,17 +159,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     }
 
     private void setActionBarBackgroundColor() {
-        ((SingleFragmentActivity)getActivity()).setToolbarColor(getConfColor());
-    }
-
-    private int getConfColor() {
-        int color;
-        if(mTalk.getId() % 2 == 0) {
-            color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
-        } else {
-            color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
-        }
-
-        return color;
+        ((SingleFragmentActivity)getActivity()).setToolbarColor(FullStackFestConfig.getConfColor(mTalk));
     }
 }

@@ -12,12 +12,14 @@ public class Talk {
     private String mTitle;
     private int mSpeakerId;
     private String mDescription;
+    private String[] mTags;
 
-    public Talk(int id, String title, String description, int speakerId) {
+    public Talk(int id, String title, String description, int speakerId, String[] tags) {
         mId = id;
         mTitle = title;
         mSpeakerId = speakerId;
         mDescription = description;
+        mTags = tags;
     }
 
     public int getId() {
@@ -32,5 +34,9 @@ public class Talk {
 
     public String getDescription() {
         return new MarkdownProcessor().markdown(mDescription);
+    }
+
+    public String[] getTags() {
+        return mTags;
     }
 }

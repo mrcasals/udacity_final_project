@@ -25,7 +25,8 @@ public class JSONDataParser {
     private final String TALK_TITLE = "title";
     private final String TALK_DESCRIPTION = "description";
     private final String TALK_PICTURE = "picture";
-    private final String TALK_URL= "url";
+    private final String TALK_URL = "url";
+    private final String TALK_TAGS = "tag_titles";
     private final String SPEAKER_NAME = "name";
     private final String SPEAKER_PICTURE = "picture_big";
     private final String SPEAKER_BIO = "bio";
@@ -68,12 +69,18 @@ public class JSONDataParser {
             int speakerId = i + 1;
             String title;
             String description;
+            String[] tags;
 
             JSONObject talk = talks.getJSONObject(i);
             title = talk.getString(TALK_TITLE);
             description = talk.getString(TALK_DESCRIPTION);
+            JSONArray talkTags =  talk.getJSONArray(TALK_TAGS);
+            tags = new String[talkTags.length()];
 
-            Talk parsedTalk = new Talk(i + 1, title, description, speakerId);
+            for(int j=0;j<talkTags.length();j++)
+                tags[j]=talkTags.getString(j);
+
+            Talk parsedTalk = new Talk(i + 1, title, description, speakerId, tags);
             mTalks.add(parsedTalk);
         }
     }
