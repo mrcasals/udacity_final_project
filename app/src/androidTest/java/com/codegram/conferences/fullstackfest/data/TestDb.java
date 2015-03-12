@@ -88,63 +88,52 @@ public class TestDb extends AndroidTestCase {
     }
 
 
-//    /*
-//        Students:  Here is where you will build code to test that we can insert and query the
-//        database.  We've done a lot of work for you.  You'll want to look in TestUtilities
-//        where you can use the "createWeatherValues" function.  You can
-//        also make use of the validateCurrentRecord function from within TestUtilities.
-//     */
-//    public void testWeatherTable() {
-//        // First insert the location, and then use the speakerRowId to insert
-//        // the weather. Make sure to cover as many failure cases as you can.
-//
-//        // Instead of rewriting all of the code we've already written in testLocationTable
-//        // we can move this code to insertLocation and then call insertLocation from both
-//        // tests. Why move it? We need the code to return the ID of the inserted location
-//        // and our testLocationTable can only return void because it's a test.
-//
-//        long speakerRowId = insertSpeaker();
-//
-//        // First step: Get reference to writable database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        // Create ContentValues of what you want to insert
-//        // (you can use the createWeatherValues TestUtilities function if you wish)
-//        ContentValues weathervalues = TestUtilities.createWeatherValues(speakerRowId);
-//
-//        // Insert ContentValues into database and get a row ID back
-//        long weatherRowId = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, weathervalues);
-//        assertTrue(weatherRowId != -1);
-//
-//        // Query the database and receive a Cursor back
-//        Cursor weatherCursor = db.query(
-//                WeatherContract.WeatherEntry.TABLE_NAME,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // Move the cursor to a valid database row
-//        assertTrue("Error: No records found in weather table", weatherCursor.moveToFirst());
-//
-//        // Validate data in resulting Cursor with the original ContentValues
-//        // (you can use the validateCurrentRecord function in TestUtilities to validate the
-//        // query if you like)
-//        TestUtilities.validateCurrentRecord("Error: weather entry failed to validate",
-//                weatherCursor, weathervalues);
-//
-//        // Move the cursor to demonstrate that there is only one record in the database
-//        assertFalse( "Error: More than one record returned from weather query",
-//                weatherCursor.moveToNext() );
-//
-//        // Sixth Step: Close cursor and database
-//        weatherCursor.close();
-//        dbHelper.close();
-//    }
+    public void testWeatherTable() {
+        // First insert the speaker, and then use the speakerRowId to insert
+        // the talk. Make sure to cover as many failure cases as you can.
+
+        long speakerRowId = insertSpeaker();
+
+        // First step: Get reference to writable database
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Create ContentValues of what you want to insert
+        // (you can use the createWeatherValues TestUtilities function if you wish)
+        ContentValues talkValues = TestUtilities.createTalkValues(speakerRowId);
+
+        // Insert ContentValues into database and get a row ID back
+        long talkRowId = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, talkValues);
+        assertTrue(talkRowId != -1);
+
+        // Query the database and receive a Cursor back
+        Cursor talkCursor = db.query(
+                DatabaseContract.TalkEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Move the cursor to a valid database row
+        assertTrue("Error: No records found in talks table", talkCursor.moveToFirst());
+
+        // Validate data in resulting Cursor with the original ContentValues
+        // (you can use the validateCurrentRecord function in TestUtilities to validate the
+        // query if you like)
+        TestUtilities.validateCurrentRecord("Error: talk entry failed to validate",
+                talkCursor, talkValues);
+
+        // Move the cursor to demonstrate that there is only one record in the database
+        assertFalse( "Error: More than one record returned from talk query",
+                talkCursor.moveToNext() );
+
+        // Sixth Step: Close cursor and database
+        talkCursor.close();
+        dbHelper.close();
+    }
 
 
     public long insertSpeaker() {

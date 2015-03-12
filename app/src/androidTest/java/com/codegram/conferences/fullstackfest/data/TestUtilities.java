@@ -37,6 +37,16 @@ public class TestUtilities extends AndroidTestCase {
         return testValues;
     }
 
+    static ContentValues createTalkValues(long speakerId) {
+        // Create a new map of values, where column names are the keys
+        ContentValues testValues = new ContentValues();
+        testValues.put(DatabaseContract.TalkEntry.COLUMN_SPEAKER_ID, speakerId);
+        testValues.put(DatabaseContract.TalkEntry.COLUMN_TITLE, "Talk Title");
+        testValues.put(DatabaseContract.TalkEntry.COLUMN_DESCRIPTION, "Talk Description");
+
+        return testValues;
+    }
+
     static long insertSpeakerValues(Context context) {
         // insert our test records into the database
         DatabaseHelper dbHelper = new DatabaseHelper(context);
