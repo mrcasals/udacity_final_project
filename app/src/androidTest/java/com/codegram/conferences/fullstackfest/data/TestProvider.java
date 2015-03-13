@@ -144,29 +144,30 @@ public class TestProvider extends AndroidTestCase {
         // content://com.codegram.conferences.fullstackfest/talks/
         String type = mContext.getContentResolver().getType(TalkEntry.CONTENT_URI);
         // vnd.android.cursor.dir/com.codegram.conferences.fullstackfest/talks
-        assertEquals("Error: the WeatherEntry CONTENT_URI should return WeatherEntry.CONTENT_TYPE",
+        assertEquals("Error: the TalkEntry CONTENT_URI should return TalkEntry.CONTENT_TYPE",
                 TalkEntry.CONTENT_TYPE, type);
 
-        String testTalk = "/1";
+        String testTalk = "1";
         long talkId = 1;
         // content://com.codegram.conferences.fullstackfest/talks/1
         type = mContext.getContentResolver().getType(
                 SpeakerEntry.buildSpeakerTalk(testTalk));
-        // vnd.android.cursor.dir/com.codegram.conferences.fullstackfest/talks
-        assertEquals("Error: the WeatherEntry CONTENT_URI with location should return WeatherEntry.CONTENT_TYPE",
-                SpeakerEntry.CONTENT_TYPE, type);
+        Log.d("TestProvider", "Content URL: " + type);
+        // vnd.android.cursor.dir/com.codegram.conferences.fullstackfest/talks/1
+        assertEquals("Error: the SpeakerEntry CONTENT_URI with talk should return SpeakerEntry.CONTENT_TYPE. Blah: " + SpeakerEntry.buildSpeakerTalk(testTalk),
+                SpeakerEntry.CONTENT_ITEM_TYPE, type);
 
         // content://com.codegram.conferences.fullstackfest/talks/1/speaker
         type = mContext.getContentResolver().getType(
                 TalkEntry.buildTalkUri(talkId));
         // vnd.android.cursor.item/com.example.android.sunshine.app/weather/1419120000
-        assertEquals("Error: the WeatherEntry CONTENT_URI with location and date should return WeatherEntry.CONTENT_ITEM_TYPE",
+        assertEquals("Error: the TalkEntry CONTENT_URI with location and date should return TalkEntry.CONTENT_ITEM_TYPE",
                 TalkEntry.CONTENT_ITEM_TYPE, type);
 
         // content://com.codegram.conferences.fullstackfest/speakers/
         type = mContext.getContentResolver().getType(SpeakerEntry.CONTENT_URI);
         // vnd.android.cursor.dir/com.codegram.conferences.fullstackfest/speakers
-        assertEquals("Error: the LocationEntry CONTENT_URI should return LocationEntry.CONTENT_TYPE",
+        assertEquals("Error: the SpeakerEntry CONTENT_URI should return SpeakerEntry.CONTENT_TYPE",
                 SpeakerEntry.CONTENT_TYPE, type);
     }
 

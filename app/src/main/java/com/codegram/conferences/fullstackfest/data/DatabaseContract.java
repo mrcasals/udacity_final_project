@@ -91,7 +91,7 @@ public class DatabaseContract {
         }
 
         public static Uri buildSpeakerTalk(String talkPath) {
-            return BASE_CONTENT_URI.buildUpon().appendPath("/talks").appendPath(talkPath).appendPath("/speaker").build();
+            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_TALKS).appendPath(talkPath).appendPath("speaker").build();
         }
 
         public static String getTalkIdFromUri(Uri uri) {
