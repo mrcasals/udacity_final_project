@@ -45,8 +45,6 @@ public class DatabaseContract {
     public static final class TalkEntry implements BaseColumns {
         public static final String TABLE_NAME = "talks";
 
-        public static final String COLUMN_SPEAKER_ID = "speaker_id";
-
         public static final String COLUMN_TITLE= "title";
         public static final String COLUMN_DESCRIPTION = "description";
 
@@ -70,6 +68,8 @@ public class DatabaseContract {
 
         public static final String TABLE_NAME = "speakers";
 
+        public static final String COLUMN_TALK_ID = "talk_id";
+
         // Column with the foreign key into the location table.
         public static final String COLUMN_NAME = "name";
         // Date, stored as long in milliseconds since the epoch
@@ -92,6 +92,10 @@ public class DatabaseContract {
 
         public static Uri buildSpeakerTalk(String talkPath) {
             return BASE_CONTENT_URI.buildUpon().appendPath(PATH_TALKS).appendPath(talkPath).appendPath("speaker").build();
+        }
+
+        public static Uri buildSpeakerTalk(long talkId) {
+            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_TALKS).appendPath(Long.toString(talkId)).appendPath("speaker").build();
         }
 
         public static String getTalkIdFromUri(Uri uri) {

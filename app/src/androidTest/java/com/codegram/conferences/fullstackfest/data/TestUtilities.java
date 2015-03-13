@@ -14,6 +14,12 @@ import java.util.Set;
  */
 public class TestUtilities extends AndroidTestCase {
 
+    static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
+        assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
+        validateCurrentRecord(error, valueCursor, expectedValues);
+        valueCursor.close();
+    }
+
     static void validateCurrentRecord(String error, Cursor valueCursor, ContentValues expectedValues) {
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
         for (Map.Entry<String, Object> entry : valueSet) {
@@ -27,38 +33,39 @@ public class TestUtilities extends AndroidTestCase {
         }
     }
 
-    static ContentValues createSpeakerValues() {
+    static ContentValues createSpeakerValues(long talkId) {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
         testValues.put(DatabaseContract.SpeakerEntry.COLUMN_NAME, "Aaron Patterson");
         testValues.put(DatabaseContract.SpeakerEntry.COLUMN_BIO, "Cat lover, ninja ballet dancer");
         testValues.put(DatabaseContract.SpeakerEntry.COLUMN_PHOTO_URL, "http://yeah.com/test.jpg");
+        testValues.put(DatabaseContract.SpeakerEntry.COLUMN_TALK_ID, talkId);
+
 
         return testValues;
     }
 
-    static ContentValues createTalkValues(long speakerId) {
+    static ContentValues createTalkValues() {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
-        testValues.put(DatabaseContract.TalkEntry.COLUMN_SPEAKER_ID, speakerId);
         testValues.put(DatabaseContract.TalkEntry.COLUMN_TITLE, "Talk Title");
         testValues.put(DatabaseContract.TalkEntry.COLUMN_DESCRIPTION, "Talk Description");
 
         return testValues;
     }
 
-    static long insertSpeakerValues(Context context) {
+    static long insertTalkValues(Context context) {
         // insert our test records into the database
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues testValues = TestUtilities.createSpeakerValues();
+        ContentValues testValues = TestUtilities.createTalkValues();
 
-        long speakerRowId;
-        speakerRowId = db.insert(DatabaseContract.SpeakerEntry.TABLE_NAME, null, testValues);
+        long talkRowId;
+        talkRowId = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
-        assertTrue("Error: Failure to insert Speaker Values", speakerRowId != -1);
+        assertTrue("Error: Failure to insert Talk Values", talkRowId != -1);
 
-        return speakerRowId;
+        return talkRowId;
     }
 }

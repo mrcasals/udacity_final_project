@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.codegram.conferences.fullstackfest.data.DatabaseContract.TalkEntry;
 import com.codegram.conferences.fullstackfest.data.DatabaseContract.SpeakerEntry;
+import com.codegram.conferences.fullstackfest.models.Speaker;
 
 /*
     Note: This is not a complete set of tests of the Sunshine ContentProvider, but it does test
@@ -160,8 +161,8 @@ public class TestProvider extends AndroidTestCase {
         // content://com.codegram.conferences.fullstackfest/talks/1/speaker
         type = mContext.getContentResolver().getType(
                 TalkEntry.buildTalkUri(talkId));
-        // vnd.android.cursor.item/com.example.android.sunshine.app/weather/1419120000
-        assertEquals("Error: the TalkEntry CONTENT_URI with location and date should return TalkEntry.CONTENT_ITEM_TYPE",
+        // vnd.android.cursor.item/com.example.android.sunshine.app/talks/1/speaker
+        assertEquals("Error: the TalkEntry CONTENT_URI with speaker should return TalkEntry.CONTENT_ITEM_TYPE",
                 TalkEntry.CONTENT_ITEM_TYPE, type);
 
         // content://com.codegram.conferences.fullstackfest/speakers/
@@ -171,73 +172,72 @@ public class TestProvider extends AndroidTestCase {
                 SpeakerEntry.CONTENT_TYPE, type);
     }
 
-//    /*
-//        This test uses the database directly to insert and then uses the ContentProvider to
-//        read out the data.  Uncomment this test to see if the basic weather query functionality
-//        given in the ContentProvider is working correctly.
-//     */
-//    public void testBasicWeatherQuery() {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//        long locationRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
-//
-//        // Fantastic.  Now that we have a location, add some weather!
-//        ContentValues weatherValues = TestUtilities.createWeatherValues(locationRowId);
-//
-//        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
-//        assertTrue("Unable to Insert WeatherEntry into the Database", weatherRowId != -1);
-//
-//        db.close();
-//
-//        // Test the basic content provider query
-//        Cursor weatherCursor = mContext.getContentResolver().query(
-//                WeatherEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // Make sure we get the correct cursor out of the database
-//        TestUtilities.validateCursor("testBasicWeatherQuery", weatherCursor, weatherValues);
-//    }
-//
-//    /*
-//        This test uses the database directly to insert and then uses the ContentProvider to
-//        read out the data.  Uncomment this test to see if your location queries are
-//        performing correctly.
-//     */
-//    public void testBasicLocationQueries() {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//        long locationRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
-//
-//        // Test the basic content provider query
-//        Cursor locationCursor = mContext.getContentResolver().query(
-//                LocationEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//
-//        // Make sure we get the correct cursor out of the database
-//        TestUtilities.validateCursor("testBasicLocationQueries, location query", locationCursor, testValues);
-//
-//        // Has the NotificationUri been set correctly? --- we can only test this easily against API
-//        // level 19 or greater because getNotificationUri was added in API level 19.
-//        if ( Build.VERSION.SDK_INT >= 19 ) {
-//            assertEquals("Error: Location Query did not properly set NotificationUri",
-//                    locationCursor.getNotificationUri(), LocationEntry.CONTENT_URI);
-//        }
-//    }
-//
+    /*
+        This test uses the database directly to insert and then uses the ContentProvider to
+        read out the data.
+     */
+    public void testBasicSpeakerQuery() {
+        // insert our test records into the database
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        long talkId = TestUtilities.insertTalkValues(mContext);
+
+        // Fantastic.  Now that we have a talk, let's add the speaker!
+        ContentValues speakerValues = TestUtilities.createSpeakerValues(talkId);
+
+        long speakerId = db.insert(SpeakerEntry.TABLE_NAME, null, speakerValues);
+        assertTrue("Unable to Insert TalkEntry into the Database", speakerId != -1);
+
+        db.close();
+
+        // Test the basic content provider query
+        Cursor speakerCursor = mContext.getContentResolver().query(
+                SpeakerEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor out of the database
+        TestUtilities.validateCursor("testBasicTalkQuery", speakerCursor, speakerValues);
+    }
+
+    /*
+        This test uses the database directly to insert and then uses the ContentProvider to
+        read out the data.
+     */
+    public void testBasicTalkQueries() {
+        // insert our test records into the database
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues talkValues = TestUtilities.createTalkValues();
+
+        long talkId = db.insert(TalkEntry.TABLE_NAME, null, talkValues);
+        assertTrue("Unable to Insert TalkEntry into the Database", talkId != -1);
+
+        // Test the basic content provider query
+        Cursor talkCursor = mContext.getContentResolver().query(
+                TalkEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor out of the database
+        TestUtilities.validateCursor("testBasicTalkQueries, talk query", talkCursor, talkValues);
+
+        // Has the NotificationUri been set correctly? --- we can only test this easily against API
+        // level 19 or greater because getNotificationUri was added in API level 19.
+        if ( Build.VERSION.SDK_INT >= 19 ) {
+            assertEquals("Error: Talk Query did not properly set NotificationUri",
+                    talkCursor.getNotificationUri(), TalkEntry.CONTENT_URI);
+        }
+    }
+
 //    /*
 //        This test uses the provider to insert and then update the data. Uncomment this test to
 //        see if your update location is functioning correctly.

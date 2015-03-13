@@ -68,7 +68,6 @@ public class TestDb extends AndroidTestCase {
         talkColumnHashSet.add(DatabaseContract.TalkEntry._ID);
         talkColumnHashSet.add(DatabaseContract.TalkEntry.COLUMN_TITLE);
         talkColumnHashSet.add(DatabaseContract.TalkEntry.COLUMN_DESCRIPTION);
-        talkColumnHashSet.add(DatabaseContract.TalkEntry.COLUMN_SPEAKER_ID);
 
         int columnNameIndex = c.getColumnIndex("name");
         do {
@@ -83,16 +82,16 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
-    public void testSpeakerTable() {
-        insertSpeaker();
+    public void testTalkTable() {
+        insertTalk();
     }
 
 
-    public void testWeatherTable() {
+    public void testSpeakerTable() {
         // First insert the speaker, and then use the speakerRowId to insert
         // the talk. Make sure to cover as many failure cases as you can.
 
-        long speakerRowId = insertSpeaker();
+        long talkRowId = insertTalk();
 
         // First step: Get reference to writable database
         DatabaseHelper dbHelper = new DatabaseHelper(mContext);
@@ -100,60 +99,14 @@ public class TestDb extends AndroidTestCase {
 
         // Create ContentValues of what you want to insert
         // (you can use the createWeatherValues TestUtilities function if you wish)
-        ContentValues talkValues = TestUtilities.createTalkValues(speakerRowId);
+        ContentValues talkValues = TestUtilities.createSpeakerValues(talkRowId);
 
         // Insert ContentValues into database and get a row ID back
-        long talkRowId = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, talkValues);
-        assertTrue(talkRowId != -1);
-
-        // Query the database and receive a Cursor back
-        Cursor talkCursor = db.query(
-                DatabaseContract.TalkEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        // Move the cursor to a valid database row
-        assertTrue("Error: No records found in talks table", talkCursor.moveToFirst());
-
-        // Validate data in resulting Cursor with the original ContentValues
-        // (you can use the validateCurrentRecord function in TestUtilities to validate the
-        // query if you like)
-        TestUtilities.validateCurrentRecord("Error: talk entry failed to validate",
-                talkCursor, talkValues);
-
-        // Move the cursor to demonstrate that there is only one record in the database
-        assertFalse( "Error: More than one record returned from talk query",
-                talkCursor.moveToNext() );
-
-        // Sixth Step: Close cursor and database
-        talkCursor.close();
-        dbHelper.close();
-    }
-
-
-    public long insertSpeaker() {
-        // First step: Get reference to writable database
-        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // Create ContentValues of what you want to insert
-        // (you can use the createSpeakerValues if you wish)
-        ContentValues testValues = TestUtilities.createSpeakerValues();
-
-        // Insert ContentValues into database and get a row ID back
-        long speakerRowId;
-        speakerRowId = db.insert(DatabaseContract.SpeakerEntry.TABLE_NAME, null, testValues);
-
-        // Query the database and receive a Cursor back
+        long speakerRowId = db.insert(DatabaseContract.SpeakerEntry.TABLE_NAME, null, talkValues);
         assertTrue(speakerRowId != -1);
 
-        // Move the cursor to a valid database row
-        Cursor cursor = db.query(
+        // Query the database and receive a Cursor back
+        Cursor speakerCursor = db.query(
                 DatabaseContract.SpeakerEntry.TABLE_NAME,
                 null,
                 null,
@@ -163,21 +116,66 @@ public class TestDb extends AndroidTestCase {
                 null
         );
 
-        assertTrue("Error: No records returned from speakers query", cursor.moveToFirst());
+        // Move the cursor to a valid database row
+        assertTrue("Error: No records found in speakers table", speakerCursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
-        TestUtilities.validateCurrentRecord("Error: Speaker Query Validation failed",
+        TestUtilities.validateCurrentRecord("Error: speaker entry failed to validate",
+                speakerCursor, talkValues);
+
+        // Move the cursor to demonstrate that there is only one record in the database
+        assertFalse( "Error: More than one record returned from speaker query",
+                speakerCursor.moveToNext() );
+
+        // Sixth Step: Close cursor and database
+        speakerCursor.close();
+        dbHelper.close();
+    }
+
+
+    public long insertTalk() {
+        // First step: Get reference to writable database
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Create ContentValues of what you want to insert
+        // (you can use the createSpeakerValues if you wish)
+        ContentValues testValues = TestUtilities.createTalkValues();
+
+        // Insert ContentValues into database and get a row ID back
+        long talkRowId = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, testValues);
+
+        // Query the database and receive a Cursor back
+        assertTrue(talkRowId != -1);
+
+        // Move the cursor to a valid database row
+        Cursor cursor = db.query(
+                DatabaseContract.TalkEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertTrue("Error: No records returned from talks query", cursor.moveToFirst());
+
+        // Validate data in resulting Cursor with the original ContentValues
+        // (you can use the validateCurrentRecord function in TestUtilities to validate the
+        // query if you like)
+        TestUtilities.validateCurrentRecord("Error: Talk Query Validation failed",
                 cursor, testValues);
 
         // Move the cursor to validate there's only one record
-        assertFalse("Error: More than one record returned from speaker query",
+        assertFalse("Error: More than one record returned from talk query",
                 cursor.moveToNext());
 
         // Finally, close the cursor and database
         cursor.close();
         db.close();
-        return speakerRowId;
+        return talkRowId;
     }
 }

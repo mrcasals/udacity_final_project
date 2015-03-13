@@ -24,11 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_TALKS_TABLE = "CREATE TABLE " + TalkEntry.TABLE_NAME + " (" +
                 TalkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TalkEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                TalkEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                TalkEntry.COLUMN_SPEAKER_ID + " INTEGER NOT NULL, " +
-                // Set up the location column as a foreign key to location table.
-                "FOREIGN KEY (" + TalkEntry.COLUMN_SPEAKER_ID + ") REFERENCES " +
-                SpeakerEntry.TABLE_NAME + " (" + SpeakerEntry._ID + ")" +
+                TalkEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL " +
                 " );";
 
         final String SQL_CREATE_SPEAKERS_TABLE = "CREATE TABLE " + SpeakerEntry.TABLE_NAME + " (" +
@@ -42,7 +38,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // the ID of the location entry associated with this weather data
                 SpeakerEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 SpeakerEntry.COLUMN_BIO + " TEXT NOT NULL, " +
-                SpeakerEntry.COLUMN_PHOTO_URL + " TEXT NOT NULL " +
+                SpeakerEntry.COLUMN_PHOTO_URL + " TEXT NOT NULL, " +
+                SpeakerEntry.COLUMN_TALK_ID + " INTEGER NOT NULL, " +
+                // Set up the location column as a foreign key to location table.
+                "FOREIGN KEY (" + SpeakerEntry.COLUMN_TALK_ID + ") REFERENCES " +
+                TalkEntry.TABLE_NAME + " (" + TalkEntry._ID + ")" +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_TALKS_TABLE);

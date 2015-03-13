@@ -21,20 +21,6 @@ public class DatabaseProvider extends ContentProvider {
     static final int TALKS = 200;
     static final int TALK = 201;
 
-    private static final SQLiteQueryBuilder sSpeakerByTalkIdQueryBuilder;
-
-    static {
-        sSpeakerByTalkIdQueryBuilder = new SQLiteQueryBuilder();
-        sSpeakerByTalkIdQueryBuilder.setTables(
-                DatabaseContract.SpeakerEntry.TABLE_NAME + " INNER JOIN " +
-                        DatabaseContract.TalkEntry.TABLE_NAME +
-                        " ON " + DatabaseContract.SpeakerEntry.TABLE_NAME +
-                        "." + DatabaseContract.SpeakerEntry._ID +
-                        " = " + DatabaseContract.TalkEntry.TABLE_NAME +
-                        "." + DatabaseContract.TalkEntry.COLUMN_SPEAKER_ID
-        );
-    }
-
     private static final String sTalkSelection =
             DatabaseContract.TalkEntry.TABLE_NAME +
                     "." + DatabaseContract.TalkEntry._ID + " = ?";
@@ -43,19 +29,9 @@ public class DatabaseProvider extends ContentProvider {
             DatabaseContract.SpeakerEntry.TABLE_NAME +
                     "." + DatabaseContract.SpeakerEntry._ID + " = ?";
 
-    private Cursor getSpeakerByTalkId(Uri uri, String[] projection, String sortOrder) {
-        String talkId = DatabaseContract.SpeakerEntry.getTalkIdFromUri(uri);
-
-        String[] selectionArgs = new String[]{talkId};
-        return sSpeakerByTalkIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                sSpeakerSelection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-    }
+    private static final String sSpeakerByTalkIdSelection =
+            DatabaseContract.SpeakerEntry.TABLE_NAME +
+                    "." + DatabaseContract.SpeakerEntry.COLUMN_TALK_ID + " = ?";
 
     static UriMatcher buildUriMatcher() {
         // 1) The code passed into the constructor represents the code to return for the root
@@ -183,13 +159,21 @@ public class DatabaseProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "weather/*/*"
+            // "talks/#/speaker"
             case SPEAKER_WITH_TALK:
             {
-                retCursor = getSpeakerByTalkId(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DatabaseContract.TalkEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
-            // "weather/*"
+            // "talks/#"
             case TALK: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DatabaseContract.TalkEntry.TABLE_NAME,
@@ -202,7 +186,7 @@ public class DatabaseProvider extends ContentProvider {
                 );
                 break;
             }
-            // "weather"
+            // "talks"
             case TALKS: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DatabaseContract.TalkEntry.TABLE_NAME,
@@ -215,7 +199,7 @@ public class DatabaseProvider extends ContentProvider {
                 );
                 break;
             }
-            // "location"
+            // "speakers"
             case SPEAKERS: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DatabaseContract.SpeakerEntry.TABLE_NAME,
