@@ -2,6 +2,7 @@ package com.codegram.conferences.fullstackfest;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,6 +115,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(FullStackFestConfig.getConfColor(mTalk));
+        }
+        
         mSpeakerName.setText(speaker.getName());
         Picasso picasso = Picasso.with(getActivity());
         picasso.load(speaker.getPictureUrl())
