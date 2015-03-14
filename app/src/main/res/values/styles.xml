@@ -8,4 +8,8 @@
         <item name="drawerType">@integer/DRAWERTYPE_IMAGE</item>
     </style>
 
+    <style name="FullStackFest2" parent="@style/Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+    </style>
+
 </resources>

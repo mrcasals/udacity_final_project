@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     private LinearLayout mHeaderTalkDetails;
 
     private ImageView mSpeakerAvatar;
-    private View mToolbarView;
+    private Toolbar mToolbarView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
 
@@ -99,7 +100,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
 
         // find toolbar and scrollview
-        mToolbarView = getActivity().findViewById(R.id.toolbar);
+        mToolbarView = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        ((SingleFragmentActivity)getActivity()).setSupportActionBar(mToolbarView);
         mScrollView = (ObservableScrollView) v.findViewById(R.id.talk_scroll);
 
         // fill views
