@@ -80,5 +80,6 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
             inserted = mContext.getContentResolver().bulkInsert(DatabaseContract.TalkEntry.CONTENT_URI, talksCVArray);
             Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Talks Inserted");
         }
+        cursor.close();
     }
 }
