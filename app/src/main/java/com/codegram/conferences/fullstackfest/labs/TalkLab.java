@@ -19,10 +19,10 @@ public class TalkLab {
         mAppContext = appContext;
         mTalks = new ArrayList<Talk>();
 
-        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", "DEsc 1", 1, new String[] {"ruby"});
+        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", "DEsc 1", new String[] {"ruby"});
         mTalks.add(talk);
 
-        talk = new Talk(2, "Awesome talk", "Desc 2", 2, new String[] {"javascript"});
+        talk = new Talk(2, "Awesome talk", "Desc 2", new String[] {"javascript"});
         mTalks.add(talk);
     }
 

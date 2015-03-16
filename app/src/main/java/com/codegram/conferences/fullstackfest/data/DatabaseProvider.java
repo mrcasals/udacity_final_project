@@ -129,7 +129,7 @@ public class DatabaseProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case TALK: {
+            case TALKS: {
                 long _id = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = DatabaseContract.TalkEntry.buildTalkUri(_id);

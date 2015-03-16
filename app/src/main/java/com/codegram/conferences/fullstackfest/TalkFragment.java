@@ -83,7 +83,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         View v = inflater.inflate(R.layout.fragment_talk, container, false);
 
-        Speaker speaker = SpeakerLab.get(getActivity()).getSpeaker(mTalk.getSpeakerId());
+        Speaker speaker = SpeakerLab.get(getActivity()).getSpeakerByTalkId(mTalk.getId());
 
         // find header talk details views
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);

@@ -10,12 +10,18 @@ public class Speaker {
     private String mName;
     private String mPictureUrl;
     private String mBio;
+    private int mTalkId;
 
-    public Speaker(int id, String name, String pictureUrl, String bio) {
+    public Speaker(int id, int talkId, String name, String pictureUrl, String bio) {
         mId = id;
+        mTalkId = talkId;
         mName = name;
         mPictureUrl = pictureUrl;
         mBio = bio;
+    }
+
+    public int getTalkId() {
+        return mTalkId;
     }
 
     public int getId() {

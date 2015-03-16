@@ -1,11 +1,14 @@
 package com.codegram.conferences.fullstackfest.tasks;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
+import com.codegram.conferences.fullstackfest.data.DatabaseContract;
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Talk;
@@ -60,5 +63,22 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
         SpeakerLab.get(mContext).setCollection(parser.getSpeakers());
         mAdapter.clear();
         mAdapter.addAll(parser.getTalks());
+
+        int inserted = 0;
+        Cursor cursor = mContext.getContentResolver().query(
+                DatabaseContract.TalkEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Log.d(LOG_TAG, "Talks found: " + Integer.toString(cursor.getCount()));
+        if(cursor.getCount() == 0) {
+            ContentValues[] talksCVArray = new ContentValues[parser.getTalksCV().size()];
+            parser.getTalksCV().toArray(talksCVArray);
+            inserted = mContext.getContentResolver().bulkInsert(DatabaseContract.TalkEntry.CONTENT_URI, talksCVArray);
+            Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Talks Inserted");
+        }
     }
 }

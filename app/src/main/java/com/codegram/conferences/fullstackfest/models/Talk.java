@@ -10,14 +10,12 @@ import java.util.UUID;
 public class Talk {
     private int mId;
     private String mTitle;
-    private int mSpeakerId;
     private String mDescription;
     private String[] mTags;
 
-    public Talk(int id, String title, String description, int speakerId, String[] tags) {
+    public Talk(int id, String title, String description, String[] tags) {
         mId = id;
         mTitle = title;
-        mSpeakerId = speakerId;
         mDescription = description;
         mTags = tags;
     }
@@ -29,8 +27,6 @@ public class Talk {
     public String getTitle() {
         return mTitle;
     }
-
-    public int getSpeakerId() { return mSpeakerId; }
 
     public String getDescription() {
         return new MarkdownProcessor().markdown(mDescription);

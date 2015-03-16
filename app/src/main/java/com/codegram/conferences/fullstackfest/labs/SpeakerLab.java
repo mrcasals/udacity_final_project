@@ -18,10 +18,10 @@ public class SpeakerLab {
         mAppContext = appContext;
         mSpeakers = new ArrayList<Speaker>();
 
-        Speaker speaker = new Speaker(1, "Aaron Patterson", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg", "bio 1");
+        Speaker speaker = new Speaker(1, 1, "Aaron Patterson", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg", "bio 1");
         mSpeakers.add(speaker);
 
-        speaker = new Speaker(2, "Sandi Metz", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg", "bio 2");
+        speaker = new Speaker(2, 2, "Sandi Metz", "http://conferences.codegram.com/assets/fallback/speaker_default_picture-1da798ebd0ccbc5fbc49c9efd76c5b37.jpg", "bio 2");
         mSpeakers.add(speaker);
     }
 
@@ -39,6 +39,14 @@ public class SpeakerLab {
         for (Speaker talk : mSpeakers) {
             if (talk.getId() == id)
                 return talk;
+        }
+        return null;
+    }
+
+    public Speaker getSpeakerByTalkId(int talkId) {
+        for (Speaker speaker : mSpeakers) {
+            if (speaker.getTalkId() == talkId)
+                return speaker;
         }
         return null;
     }

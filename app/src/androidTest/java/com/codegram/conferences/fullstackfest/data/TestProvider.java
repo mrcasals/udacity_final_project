@@ -215,7 +215,10 @@ public class TestProvider extends AndroidTestCase {
 
         ContentValues talkValues = TestUtilities.createTalkValues();
 
-        long talkId = db.insert(TalkEntry.TABLE_NAME, null, talkValues);
+//        long talkId = db.insert(TalkEntry.TABLE_NAME, null, talkValues);
+        Uri locationUri = mContext.getContentResolver().
+                insert(TalkEntry.CONTENT_URI, talkValues);
+        long talkId = ContentUris.parseId(locationUri);
         assertTrue("Unable to Insert TalkEntry into the Database", talkId != -1);
 
         // Test the basic content provider query

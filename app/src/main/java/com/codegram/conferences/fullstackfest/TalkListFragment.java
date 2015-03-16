@@ -33,7 +33,6 @@ import java.util.ArrayList;
  */
 public class TalkListFragment extends ListFragment {
 
-    private ArrayList<Talk> mTalks;
     TalkListAdapter mAdapter;
     private Transformation transformation = new RoundedTransformationBuilder()
             .borderColor(Color.BLACK)
@@ -46,9 +45,7 @@ public class TalkListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTalks = TalkLab.get(getActivity()).getTalks();
-
-        mAdapter = new TalkListAdapter(mTalks);
+        mAdapter = new TalkListAdapter(TalkLab.get(getActivity()).getTalks());
         setListAdapter(mAdapter);
     }
 
@@ -56,7 +53,6 @@ public class TalkListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         updateRemoteData();
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -83,7 +79,6 @@ public class TalkListFragment extends ListFragment {
     private void updateRemoteData() {
         FetchDataTask fetchDataTask = new FetchDataTask(getActivity(), mAdapter);
         fetchDataTask.execute();
-        mTalks = TalkLab.get(getActivity()).getTalks();
     }
 
     private class TalkListAdapter extends ArrayAdapter<Talk> {
@@ -100,7 +95,7 @@ public class TalkListFragment extends ListFragment {
             }
 
             Talk talk = getItem(position);
-            Speaker speaker = SpeakerLab.get(getActivity()).getSpeaker(talk.getSpeakerId());
+            Speaker speaker = SpeakerLab.get(getActivity()).getSpeakerByTalkId(talk.getId());
 
             TextView primaryTextView =
                     (TextView)convertView.findViewById(R.id.talk_list_item_primary);
