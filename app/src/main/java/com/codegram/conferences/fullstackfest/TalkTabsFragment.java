@@ -23,7 +23,7 @@ import it.neokree.materialtabs.MaterialTabListener;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TalkTabsFragment.OnFragmentInteractionListener} interface
+ * OnFragmentInteractionListener interface
  * to handle interaction events.
  */
 public class TalkTabsFragment extends Fragment implements MaterialTabListener {
@@ -82,15 +82,16 @@ public class TalkTabsFragment extends Fragment implements MaterialTabListener {
     public void onTabUnselected(MaterialTab tab) {}
 
     public int getNumberTabs() {
-        return 4;
+        return FullStackFestConfig.TRACKS.length;
     }
 
     public CharSequence getCurrentTitle(int position) {
-        return "Day " + Integer.toString(position + 1);
+        return FullStackFestConfig.TRACKS[position];
     }
 
     public Fragment getCurrentContent(int position) {
-        return new TalkListFragment();
+        String track =  FullStackFestConfig.TRACKS[position];
+        return TalkListFragment.newInstance(track);
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {

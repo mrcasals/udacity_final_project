@@ -48,6 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codegram.conferences.fullstackfest.ListActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.codegram.conferences.fullstackfest"
+            android:name=".data.DatabaseProvider" />
     </application>
 
 </manifest>

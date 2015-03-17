@@ -102,9 +102,8 @@
                 android:paddingEnd="16dp"
                 android:text="@string/hello_blank_fragment" />
 
+            <!--
             <include layout="@layout/separator" />
-
-            <!-- more -->
 
             <TextView
                 android:layout_width="match_parent"
@@ -115,6 +114,7 @@
                 android:paddingEnd="16dp"
                 android:text="More"
                 android:textSize="20sp"/>
+            -->
         </LinearLayout>
 
     </LinearLayout>

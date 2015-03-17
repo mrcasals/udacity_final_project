@@ -1,15 +1,30 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.support.v4.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.Loader;
+import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v4.app.ListFragment;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codegram.conferences.fullstackfest.adapters.TalkListAdapter;
+import com.codegram.conferences.fullstackfest.data.DatabaseContract;
 import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
 import com.codegram.conferences.fullstackfest.labs.TalkLab;
 import com.codegram.conferences.fullstackfest.models.Speaker;
@@ -31,99 +46,129 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the OnFragmentInteractionListener
  * interface.
  */
-public class TalkListFragment extends ListFragment {
+public class TalkListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int TALKS_LOADER = 0;
 
-    private ArrayList<Talk> mTalks;
+    public static final String EXTRA_TALKS_TAG =
+            "com.codegram.conferences.fullstackfest.talks_tag";
+
+    private final static String[] TALK_LIST_COLUMNS = {
+            DatabaseContract.TalkEntry.TABLE_NAME + "." + DatabaseContract.TalkEntry._ID,
+            DatabaseContract.TalkEntry.COLUMN_TITLE,
+            DatabaseContract.TalkEntry.COLUMN_DESCRIPTION,
+            DatabaseContract.TalkEntry.COLUMN_TAGS,
+            DatabaseContract.SpeakerEntry.TABLE_NAME + "." + DatabaseContract.SpeakerEntry._ID,
+            DatabaseContract.SpeakerEntry.COLUMN_TALK_ID,
+            DatabaseContract.SpeakerEntry.COLUMN_NAME,
+            DatabaseContract.SpeakerEntry.COLUMN_BIO,
+            DatabaseContract.SpeakerEntry.COLUMN_PHOTO_URL
+    };
+
+    public static final int COL_TALK_ID = 0;
+    public static final int COL_TALK_TITLE = 1;
+    public static final int COL_TALK_DESCRIPTION = 2;
+    public static final int COL_TALK_TAGS = 3;
+    public static final int COL_SPEAKER_ID = 4;
+    public static final int COL_SPEAKER_TALK_ID = 5;
+    public static final int COL_SPEAKER_NAME = 6;
+    public static final int COL_SPEAKER_BIO = 7;
+    public static final int COL_SPEAKER_PHOTO_URL = 8;
+
     TalkListAdapter mAdapter;
-    private Transformation transformation = new RoundedTransformationBuilder()
-            .borderColor(Color.BLACK)
-            .borderWidthDp(1)
-            .cornerRadiusDp(90)
-            .oval(false)
-            .build();
+    String mTalkTag;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static TalkListFragment newInstance(String talkTag) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_TALKS_TAG, talkTag);
 
-        mTalks = TalkLab.get(getActivity()).getTalks();
+        TalkListFragment fragment = new TalkListFragment();
+        fragment.setArguments(args);
 
-        mAdapter = new TalkListAdapter(mTalks);
-        setListAdapter(mAdapter);
+        return fragment;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        updateRemoteData();
-        mAdapter.notifyDataSetChanged();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_conference_list, container, false);
+
+        mTalkTag = (String) getArguments().getSerializable(EXTRA_TALKS_TAG);
+
+        mAdapter = new TalkListAdapter(getActivity(), null, 0);
+        ListView listView = (ListView) rootView.findViewById(R.id.fragment_conference_list_id);
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView l, View v, int position, long id) {
+                // We get the talk we've clicked on
+                Cursor cursor = (Cursor) l.getItemAtPosition(position);
+                if (cursor != null) {
+
+                    // We create an Intent to link the current activity with the details one
+                    Intent intent = new Intent(getActivity(), TalkActivity.class);
+                    // As an extra, we put the ID of the talk we want to show
+                    intent.putExtra(TalkFragment.EXTRA_TALK_ID, cursor.getInt(COL_TALK_ID));
+
+                    // We start the other activity.
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.animator.push_up, R.animator.no_change);
+                }
+            }
+        });
+
+        return rootView;
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // We get the talk we've clicked on
-        Talk talk = ((TalkListAdapter)getListAdapter()).getItem(position);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_talks_list, menu);
+    }
 
-        // We create an Intent to link the current activity with the details one
-        Intent intent = new Intent(getActivity(), TalkActivity.class);
-        // As an extra, we put the ID of the talk we want to show
-        intent.putExtra(TalkFragment.EXTRA_TALK_ID, talk.getId());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_refresh:
+                updateRemoteData();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-        // We start the other activity.
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.animator.push_up, R.animator.no_change);
+    private void updateRemoteData() {
+        FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
+        fetchDataTask.execute();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(TALKS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
-        getListView().setDivider(null);
     }
 
-    private void updateRemoteData() {
-        FetchDataTask fetchDataTask = new FetchDataTask(getActivity(), mAdapter);
-        fetchDataTask.execute();
-        mTalks = TalkLab.get(getActivity()).getTalks();
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        mAdapter.swapCursor(cursor);
     }
 
-    private class TalkListAdapter extends ArrayAdapter<Talk> {
-        public TalkListAdapter(ArrayList<Talk> talks) {
-            // required to properly hook up your dataset of Talks
-            // 0 because we are not using a predefined layout, so 0 is OK
-            super(getActivity(), 0, talks);
-        }
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        mAdapter.swapCursor(null);
+    }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null) {
-                convertView = getActivity().getLayoutInflater()
-                    .inflate(R.layout.list_item_talk, null);
-            }
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String sortOrder = DatabaseContract.TalkEntry.TABLE_NAME + "." + DatabaseContract.TalkEntry._ID + " ASC";
+        Uri talksUri = DatabaseContract.TalkEntry.CONTENT_URI;
 
-            Talk talk = getItem(position);
-            Speaker speaker = SpeakerLab.get(getActivity()).getSpeaker(talk.getSpeakerId());
-
-            TextView primaryTextView =
-                    (TextView)convertView.findViewById(R.id.talk_list_item_primary);
-            TextView secondaryTextView =
-                    (TextView)convertView.findViewById(R.id.talk_list_item_secondary_1);
-            TextView secondary2TextView =
-                    (TextView)convertView.findViewById(R.id.talk_list_item_secondary_2);
-            RoundedImageView avatarView =
-                    (RoundedImageView)convertView.findViewById(R.id.talk_list_item_avatar);
-
-            primaryTextView.setText(speaker.getName());
-            secondaryTextView.setText(talk.getTitle());
-            secondary2TextView.setText("9:00");
-
-            avatarView.setImageDrawable(null);
-            Picasso picasso = Picasso.with(getActivity());
-            //picasso.setIndicatorsEnabled(true); // Needs moving RoundedImageView to ImageView (also in layout)
-            //picasso.setLoggingEnabled(true);
-            picasso.load(speaker.getPictureUrl())
-                    .fit()
-                    .transform(transformation)
-                    .into(avatarView);
-            return convertView;
-        }
+        return new CursorLoader(getActivity(),
+                talksUri,
+                TALK_LIST_COLUMNS,
+                "talks.tags LIKE ?",
+                new String[] {"%" + mTalkTag + "%"},
+                sortOrder
+                );
     }
 }

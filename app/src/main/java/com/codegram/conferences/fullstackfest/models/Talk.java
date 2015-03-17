@@ -1,5 +1,7 @@
 package com.codegram.conferences.fullstackfest.models;
 
+import android.text.TextUtils;
+
 import org.markdownj.MarkdownProcessor;
 
 import java.util.UUID;
@@ -10,16 +12,23 @@ import java.util.UUID;
 public class Talk {
     private int mId;
     private String mTitle;
-    private int mSpeakerId;
     private String mDescription;
     private String[] mTags;
 
-    public Talk(int id, String title, String description, int speakerId, String[] tags) {
+    private String ARRAY_DIVIDER = ",";
+
+    public Talk(int id, String title, String description, String[] tags) {
         mId = id;
         mTitle = title;
-        mSpeakerId = speakerId;
         mDescription = description;
         mTags = tags;
+    }
+
+    public Talk(int id, String title, String description, String tags) {
+        mId = id;
+        mTitle = title;
+        mDescription = description;
+        mTags = tags.split(ARRAY_DIVIDER);
     }
 
     public int getId() {
@@ -30,13 +39,15 @@ public class Talk {
         return mTitle;
     }
 
-    public int getSpeakerId() { return mSpeakerId; }
-
     public String getDescription() {
         return new MarkdownProcessor().markdown(mDescription);
     }
 
     public String[] getTags() {
         return mTags;
+    }
+
+    public String getTagsString() {
+        return TextUtils.join(ARRAY_DIVIDER, mTags);
     }
 }

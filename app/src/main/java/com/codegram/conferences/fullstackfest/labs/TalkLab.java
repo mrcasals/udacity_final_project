@@ -19,10 +19,10 @@ public class TalkLab {
         mAppContext = appContext;
         mTalks = new ArrayList<Talk>();
 
-        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", "DEsc 1", 1, new String[] {"ruby"});
+        Talk talk = new Talk(1, "Inspecting ActiveRecord model relations with d3.js", "DEsc 1", new String[] {"ruby"});
         mTalks.add(talk);
 
-        talk = new Talk(2, "Awesome talk", "Desc 2", 2, new String[] {"javascript"});
+        talk = new Talk(2, "Awesome talk", "Desc 2", new String[] {"javascript"});
         mTalks.add(talk);
     }
 
@@ -34,6 +34,15 @@ public class TalkLab {
 
     public ArrayList<Talk> getTalks() {
         return mTalks;
+    }
+
+    public ArrayList<Talk> getTalksByTag(int module) {
+        ArrayList<Talk> talksByTag = new ArrayList<Talk>();
+        for (Talk talk : mTalks) {
+            if (talk.getId() % 2 == module)
+                talksByTag.add(talk);
+        }
+        return talksByTag;
     }
 
     public Talk getTalk(int id) {

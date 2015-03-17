@@ -15,6 +15,7 @@ public class FullStackFestConfig {
     public static final String API_ENDPOINT = "http://conferences.codegram.com/api/full-stack-fest/talks/";
     public static final String LATLONG = "41.389280,2.137002";
     public static final String VENUE_NAME = "Auditori AXA";
+    public static final String[] TRACKS = new String[] {"ruby", "javascript"};
 
     public static int getConfColor(Talk talk) {
         int color;
