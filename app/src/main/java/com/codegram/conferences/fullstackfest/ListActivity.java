@@ -91,7 +91,7 @@ public class ListActivity extends MaterialNavigationDrawer {
     }
 
     private void updateRemoteData() {
-        FetchDataTask fetchDataTask = new FetchDataTask(this, null);
+        FetchDataTask fetchDataTask = new FetchDataTask(this);
         fetchDataTask.execute();
     }
 }

@@ -138,7 +138,7 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateRemoteData() {
-        FetchDataTask fetchDataTask = new FetchDataTask(getActivity(), mAdapter);
+        FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
         fetchDataTask.execute();
     }
 
