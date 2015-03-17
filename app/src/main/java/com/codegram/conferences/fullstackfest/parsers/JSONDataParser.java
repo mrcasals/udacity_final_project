@@ -137,6 +137,7 @@ public class JSONDataParser {
         ContentValues talkValues = new ContentValues();
         talkValues.put(TalkEntry.COLUMN_TITLE, talk.getTitle());
         talkValues.put(TalkEntry.COLUMN_DESCRIPTION, talk.getDescription());
+        talkValues.put(TalkEntry.COLUMN_TAGS, talk.getTagsString());
 
         return talkValues;
     }

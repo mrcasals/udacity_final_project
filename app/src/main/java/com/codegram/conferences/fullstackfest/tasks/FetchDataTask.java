@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -29,18 +30,16 @@ import java.io.IOException;
 public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
     private final String LOG_TAG = FetchDataTask.class.getSimpleName();
     private Context mContext;
-    private ArrayAdapter<Talk> mAdapter;
 
-    public FetchDataTask(Context context, ArrayAdapter<Talk> adapter) {
+    public FetchDataTask(Context context) {
         mContext = context;
-        mAdapter = adapter;
     }
 
     @Override
     protected JSONDataParser doInBackground(Void... params) {
         HttpGet get = new HttpGet(FullStackFestConfig.API_ENDPOINT);
         HttpClient client = new DefaultHttpClient();
-        String jsonData = null;
+        String jsonData;
         JSONDataParser parser;
         try {
             HttpResponse response = client.execute(get);
@@ -54,6 +53,9 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
 
         parser = new JSONDataParser(jsonData);
         parser.parse();
+
+        addToDatabase(parser);
+
         return parser;
     }
 
@@ -61,10 +63,15 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
     protected void onPostExecute(JSONDataParser parser) {
         TalkLab.get(mContext).setCollection(parser.getTalks());
         SpeakerLab.get(mContext).setCollection(parser.getSpeakers());
-        mAdapter.clear();
-        mAdapter.addAll(parser.getTalks());
+    }
 
-        int inserted = 0;
+    private void addToDatabase(JSONDataParser parser) {
+//        cleanDB();
+        addTalksToDatabase(parser);
+        addSpeakersToDatabase(parser);
+    }
+
+    private void addTalksToDatabase(JSONDataParser parser) {
         Cursor cursor = mContext.getContentResolver().query(
                 DatabaseContract.TalkEntry.CONTENT_URI,
                 null,
@@ -77,9 +84,41 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
         if(cursor.getCount() == 0) {
             ContentValues[] talksCVArray = new ContentValues[parser.getTalksCV().size()];
             parser.getTalksCV().toArray(talksCVArray);
-            inserted = mContext.getContentResolver().bulkInsert(DatabaseContract.TalkEntry.CONTENT_URI, talksCVArray);
+            int inserted = mContext.getContentResolver().bulkInsert(DatabaseContract.TalkEntry.CONTENT_URI, talksCVArray);
             Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Talks Inserted");
         }
         cursor.close();
+    }
+
+    private void addSpeakersToDatabase(JSONDataParser parser) {
+        Cursor cursor = mContext.getContentResolver().query(
+                DatabaseContract.SpeakerEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Log.d(LOG_TAG, "Speakers found: " + Integer.toString(cursor.getCount()));
+        if(cursor.getCount() == 0) {
+            ContentValues[] speakersCVArray = new ContentValues[parser.getSpeakersCV().size()];
+            parser.getSpeakersCV().toArray(speakersCVArray);
+            int inserted = mContext.getContentResolver().bulkInsert(DatabaseContract.SpeakerEntry.CONTENT_URI, speakersCVArray);
+            Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Speakers Inserted");
+        }
+        cursor.close();
+    }
+
+    private void cleanDB() {
+        mContext.getContentResolver().delete(
+                DatabaseContract.TalkEntry.CONTENT_URI,
+                null,
+                null
+        );
+        mContext.getContentResolver().delete(
+                DatabaseContract.SpeakerEntry.CONTENT_URI,
+                null,
+                null
+        );
     }
 }

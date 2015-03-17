@@ -21,6 +21,19 @@ public class DatabaseProvider extends ContentProvider {
     static final int TALKS = 200;
     static final int TALK = 201;
 
+    private static final SQLiteQueryBuilder sTalksWithSpeakersQueryBuilder;
+
+    static{
+        sTalksWithSpeakersQueryBuilder = new SQLiteQueryBuilder();
+        sTalksWithSpeakersQueryBuilder.setTables(
+                DatabaseContract.TalkEntry.TABLE_NAME + " INNER JOIN " +
+                        DatabaseContract.SpeakerEntry.TABLE_NAME +
+                        " ON " + DatabaseContract.TalkEntry.TABLE_NAME +
+                        "." + DatabaseContract.TalkEntry._ID +
+                        " = " + DatabaseContract.SpeakerEntry.TABLE_NAME +
+                        "." + DatabaseContract.SpeakerEntry.COLUMN_TALK_ID);
+    }
+
     private static final String sTalkSelection =
             DatabaseContract.TalkEntry.TABLE_NAME +
                     "." + DatabaseContract.TalkEntry._ID + " = ?";
@@ -32,6 +45,28 @@ public class DatabaseProvider extends ContentProvider {
     private static final String sSpeakerByTalkIdSelection =
             DatabaseContract.SpeakerEntry.TABLE_NAME +
                     "." + DatabaseContract.SpeakerEntry.COLUMN_TALK_ID + " = ?";
+
+    private Cursor getTalksWithSpeakers(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        return sTalksWithSpeakersQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    private Cursor getTalkWithSpeakerById(Uri uri, String[] projection, String[] selectionArgs, String sortOrder) {
+        return sTalksWithSpeakersQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sTalkSelection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
 
     static UriMatcher buildUriMatcher() {
         // 1) The code passed into the constructor represents the code to return for the root
@@ -137,7 +172,7 @@ public class DatabaseProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
-            case SPEAKER_WITH_TALK: {
+            case SPEAKERS: {
                 long _id = db.insert(DatabaseContract.SpeakerEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = DatabaseContract.SpeakerEntry.buildSpeakerUri(_id);
@@ -162,15 +197,7 @@ public class DatabaseProvider extends ContentProvider {
             // "talks/#/speaker"
             case SPEAKER_WITH_TALK:
             {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        DatabaseContract.TalkEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
+                retCursor = getTalkWithSpeakerById(uri, projection, selectionArgs, sortOrder);
                 break;
             }
             // "talks/#"
@@ -188,15 +215,7 @@ public class DatabaseProvider extends ContentProvider {
             }
             // "talks"
             case TALKS: {
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        DatabaseContract.TalkEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
+                retCursor = getTalksWithSpeakers(uri, projection, selection, selectionArgs, sortOrder);
                 break;
             }
             // "speakers"

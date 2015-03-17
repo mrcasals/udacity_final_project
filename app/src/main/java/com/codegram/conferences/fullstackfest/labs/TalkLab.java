@@ -36,6 +36,15 @@ public class TalkLab {
         return mTalks;
     }
 
+    public ArrayList<Talk> getTalksByTag(int module) {
+        ArrayList<Talk> talksByTag = new ArrayList<Talk>();
+        for (Talk talk : mTalks) {
+            if (talk.getId() % 2 == module)
+                talksByTag.add(talk);
+        }
+        return talksByTag;
+    }
+
     public Talk getTalk(int id) {
         for (Talk talk : mTalks) {
             if (talk.getId() == id)

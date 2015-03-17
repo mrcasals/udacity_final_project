@@ -11,7 +11,7 @@ import com.codegram.conferences.fullstackfest.data.DatabaseContract.TalkEntry;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "fullstackfest.db";
 
@@ -22,9 +22,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_TALKS_TABLE = "CREATE TABLE " + TalkEntry.TABLE_NAME + " (" +
-                TalkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TalkEntry._ID + " INTEGER PRIMARY KEY, " +
                 TalkEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                TalkEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL " +
+                TalkEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                TalkEntry.COLUMN_TAGS + " TEXT NOT NULL " +
                 " );";
 
         final String SQL_CREATE_SPEAKERS_TABLE = "CREATE TABLE " + SpeakerEntry.TABLE_NAME + " (" +
@@ -33,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // forecasting, it's reasonable to assume the user will want information
                 // for a certain date and all dates *following*, so the forecast data
                 // should be sorted accordingly.
-                SpeakerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                SpeakerEntry._ID + " INTEGER PRIMARY KEY," +
 
                 // the ID of the location entry associated with this weather data
                 SpeakerEntry.COLUMN_NAME + " TEXT NOT NULL, " +
