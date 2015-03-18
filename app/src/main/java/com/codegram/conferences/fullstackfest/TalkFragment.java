@@ -120,10 +120,11 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
         LinearLayout headerTalkData = (LinearLayout)getActivity().findViewById(R.id.header_talk_title_data);
         TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
-        //TextView headerTalkTime = (TextView)getActivity().findViewById(R.id.header_talk_time);
+        TextView headerTalkTime = (TextView)getActivity().findViewById(R.id.header_talk_time);
 
         // find talk details views
         mTitleView = (TextView)parentView.findViewById(R.id.talk_title);
+        TextView talkTime = (TextView)parentView.findViewById(R.id.talk_time);
         mTalkData = (LinearLayout)parentView.findViewById(R.id.talk_title_data);
 
         // find other views
@@ -139,9 +140,11 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mScrollView = (ObservableScrollView) parentView.findViewById(R.id.talk_scroll);
 
         // fill views
-
         mTitleView.setText(mTalk.getTitle());
         headerTalkTitle.setText(mTalk.getTitle());
+
+        talkTime.setText(speaker.getName());
+        headerTalkTime.setText(speaker.getName());
 
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
@@ -149,7 +152,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             Window window = ((SingleFragmentActivity)getActivity()).getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.parseColor("#ffa000"));
+            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
         }
         
         mSpeakerName.setText(speaker.getName());
