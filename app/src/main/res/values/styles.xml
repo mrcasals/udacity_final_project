@@ -2,9 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="FullStackFest" parent="MaterialNavigationDrawerTheme.Light">
-        <item name="colorPrimary">#8bc34a</item>
-        <item name="colorPrimaryDark">#558b2f</item>
-        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorPrimary">#ffc107</item>
+        <item name="colorPrimaryDark">#ffa000</item>
+        <item name="colorAccent">#009688</item>
         <item name="drawerType">@integer/DRAWERTYPE_IMAGE</item>
     </style>
 
