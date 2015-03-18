@@ -50,14 +50,11 @@ public class TalkListAdapter extends CursorAdapter {
                 (TextView)convertView.findViewById(R.id.talk_list_item_primary);
         TextView secondaryTextView =
                 (TextView)convertView.findViewById(R.id.talk_list_item_secondary_1);
-        TextView secondary2TextView =
-                (TextView)convertView.findViewById(R.id.talk_list_item_secondary_2);
         RoundedImageView avatarView =
                 (RoundedImageView)convertView.findViewById(R.id.talk_list_item_avatar);
 
         primaryTextView.setText(talk.getTitle());
         secondaryTextView.setText(speaker.getName());
-        secondary2TextView.setText("9:00");
 
         avatarView.setImageDrawable(null);
         Picasso picasso = Picasso.with(mContext);
