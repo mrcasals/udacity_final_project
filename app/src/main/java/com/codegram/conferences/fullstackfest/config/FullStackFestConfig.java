@@ -12,19 +12,22 @@ import java.util.Arrays;
 public class FullStackFestConfig {
     public static final String BARUCO_COLOR = "#FFC107";
     public static final String FUTUREJS_COLOR = "#009688";
+    public static final String BARUCO_COLOR_DARK = "#FFA000";
+    public static final String FUTUREJS_COLOR_DARK = "#00796B";
     public static final String API_ENDPOINT = "http://conferences.codegram.com/api/full-stack-fest/talks/";
     public static final String LATLONG = "41.389280,2.137002";
     public static final String VENUE_NAME = "Auditori AXA";
     public static final String[] TRACKS = new String[] {"ruby", "javascript"};
 
     public static int getConfColor(Talk talk) {
-        int color;
-        if(Arrays.asList(talk.getTags()).contains("ruby")) {
-            color = Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
-        } else {
-            color = Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
-        }
+        if(Arrays.asList(talk.getTags()).contains("ruby"))
+            return Color.parseColor(FullStackFestConfig.BARUCO_COLOR);
+        return Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR);
+    }
 
-        return color;
+    public static int getConfDarkColor(Talk talk) {
+        if(Arrays.asList(talk.getTags()).contains("ruby"))
+            return Color.parseColor(FullStackFestConfig.BARUCO_COLOR_DARK);
+        return Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR_DARK);
     }
 }
