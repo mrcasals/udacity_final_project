@@ -157,6 +157,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         
         mSpeakerName.setText(speaker.getName());
         Picasso picasso = Picasso.with(getActivity());
+//        picasso.setIndicatorsEnabled(BuildConfig.DEBUG);
+//        picasso.setLoggingEnabled(BuildConfig.DEBUG);
         picasso.load(speaker.getPictureUrl())
                 .fit()
                 .centerCrop()
