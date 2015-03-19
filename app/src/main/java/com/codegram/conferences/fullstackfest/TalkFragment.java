@@ -117,6 +117,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         Speaker speaker = buildSpeaker(data);
 
         // find header talk details views
+        View statusbar = getActivity().findViewById(R.id.statusbar);
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
         LinearLayout headerTalkData = (LinearLayout)getActivity().findViewById(R.id.header_talk_title_data);
         TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
@@ -148,12 +149,13 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
+        statusbar.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+//            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
+//        }
         
         mSpeakerName.setText(speaker.getName());
         Picasso picasso = Picasso.with(getActivity());
@@ -170,7 +172,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, FullStackFestConfig.getConfColor(mTalk)));
         mScrollView.setScrollViewCallbacks(this);
 
-        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height);
+        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+                getResources().getDimensionPixelSize(R.dimen.statusbar_height);
 
         mToolbarView.setVisibility(View.GONE);
     }
