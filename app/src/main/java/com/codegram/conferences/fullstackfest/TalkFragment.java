@@ -10,13 +10,18 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -78,6 +83,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     private Talk mTalk;
     private int mTalkId;
+    private Speaker mSpeaker;
 
     private TextView mTitleView;
     private TextView mSpeakerName;
@@ -90,6 +96,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     private Toolbar mToolbarView;
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
+
+    private ShareActionProvider mShareActionProvider;
+
+    public TalkFragment() {
+        setHasOptionsMenu(true);
+    }
 
     public static TalkFragment newInstance(int talkId) {
         Bundle args = new Bundle();
@@ -114,7 +126,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         mTalk = buildTalk(data);
 
-        Speaker speaker = buildSpeaker(data);
+        mSpeaker = buildSpeaker(data);
 
         // find header talk details views
         View statusbar = getActivity().findViewById(R.id.statusbar);
@@ -144,8 +156,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mTitleView.setText(mTalk.getTitle());
         headerTalkTitle.setText(mTalk.getTitle());
 
-        talkTime.setText(speaker.getName());
-        headerTalkTime.setText(speaker.getName());
+        talkTime.setText(mSpeaker.getName());
+        headerTalkTime.setText(mSpeaker.getName());
 
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
@@ -157,16 +169,16 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 //            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
 //        }
         
-        mSpeakerName.setText(speaker.getName());
+        mSpeakerName.setText(mSpeaker.getName());
         Picasso picasso = Picasso.with(getActivity());
 //        picasso.setIndicatorsEnabled(BuildConfig.DEBUG);
 //        picasso.setLoggingEnabled(BuildConfig.DEBUG);
-        picasso.load(speaker.getPictureUrl())
+        picasso.load(mSpeaker.getPictureUrl())
                 .fit()
                 .centerCrop()
                 .into(mSpeakerAvatar);
         mTalkDescription.setText(Html.fromHtml(mTalk.getDescription()));
-        speakerBio.setText(Html.fromHtml(speaker.getBio()));
+        speakerBio.setText(Html.fromHtml(mSpeaker.getBio()));
         speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
 
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, FullStackFestConfig.getConfColor(mTalk)));
@@ -175,7 +187,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
                 getResources().getDimensionPixelSize(R.dimen.statusbar_height);
 
-        mToolbarView.setVisibility(View.GONE);
+//        mToolbarView.setVisibility(View.GONE);
+
+        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(createShareTalkIntent());
+        }
     }
 
     @Override
@@ -230,6 +247,27 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) { }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail_talk, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        if(mTalk != null)
+            mShareActionProvider.setShareIntent(createShareTalkIntent());
+    }
+
+    private Intent createShareTalkIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        if(mTalk != null && mSpeaker != null)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Don't miss \"" + mTalk.getTitle() + "\" by " + mSpeaker.getName() + " at #fullstackfest!");
+        return shareIntent;
+    }
 
     private Talk buildTalk(Cursor cursor) {
         return new Talk(
