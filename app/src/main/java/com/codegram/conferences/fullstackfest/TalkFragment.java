@@ -163,11 +163,9 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         statusbar.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-//            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
-//        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+            statusbar.setVisibility(View.GONE);
+        }
         
         mSpeakerName.setText(mSpeaker.getName());
         Picasso picasso = Picasso.with(getActivity());
@@ -184,8 +182,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, FullStackFestConfig.getConfColor(mTalk)));
         mScrollView.setScrollViewCallbacks(this);
 
-        mParallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
-                getResources().getDimensionPixelSize(R.dimen.statusbar_height);
+        mParallaxImageHeight = getParallaxImageHeight();
 
 //        mToolbarView.setVisibility(View.GONE);
 
@@ -286,5 +283,15 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
                 cursor.getString(TalkFragment.COL_SPEAKER_PHOTO_URL),
                 cursor.getString(TalkFragment.COL_SPEAKER_BIO)
         );
+    }
+
+    private int getParallaxImageHeight() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+                getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
+        else
+            return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+                getResources().getDimensionPixelSize(R.dimen.statusbar_height) -
+                getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
     }
 }
