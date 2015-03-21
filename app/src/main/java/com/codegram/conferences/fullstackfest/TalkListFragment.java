@@ -149,6 +149,12 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(TALKS_LOADER, null, this);
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
     }

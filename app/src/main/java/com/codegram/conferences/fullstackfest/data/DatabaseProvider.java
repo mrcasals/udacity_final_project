@@ -183,7 +183,7 @@ public class DatabaseProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
+        //getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
 
@@ -237,6 +237,14 @@ public class DatabaseProvider extends ContentProvider {
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        int count = super.bulkInsert(uri, values);
+        getContext().getContentResolver().notifyChange(uri, null);
+        getContext().getContentResolver().notifyChange(DatabaseContract.TalkEntry.CONTENT_URI, null);
+        return count;
     }
 
     @Override
