@@ -129,7 +129,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mSpeaker = buildSpeaker(data);
 
         // find header talk details views
-        View statusbar = getActivity().findViewById(R.id.statusbar);
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
         TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
         TextView headerTalkTime = (TextView)getActivity().findViewById(R.id.header_talk_time);
@@ -160,10 +159,11 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         mHeaderTalkDetails.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
-        statusbar.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
-            statusbar.setVisibility(View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
         }
         
         mSpeakerName.setText(mSpeaker.getName());
@@ -286,12 +286,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     }
 
     private int getParallaxImageHeight() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
-                getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
-        else
-            return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
-                getResources().getDimensionPixelSize(R.dimen.statusbar_height) -
-                getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
+        return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
+            getResources().getDimensionPixelSize(R.dimen.statusbar_height) -
+            getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
     }
 }
