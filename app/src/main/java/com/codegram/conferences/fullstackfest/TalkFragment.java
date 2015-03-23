@@ -280,7 +280,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     private int getParallaxImageHeight() {
         return getResources().getDimensionPixelSize(R.dimen.talk_avatar_height) -
-            getResources().getDimensionPixelSize(R.dimen.statusbar_height) -
             getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
     }
 }
