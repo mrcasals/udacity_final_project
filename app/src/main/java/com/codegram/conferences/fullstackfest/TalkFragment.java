@@ -24,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
@@ -90,6 +91,8 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
     private ObservableScrollView mScrollView;
     private int mParallaxImageHeight;
 
+    private boolean mTabletLand = false;
+
     private ShareActionProvider mShareActionProvider;
 
     public TalkFragment() {
@@ -115,12 +118,47 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(!data.moveToFirst()) return;
+        if (!data.moveToFirst()) return;
 
         mTalk = buildTalk(data);
 
         mSpeaker = buildSpeaker(data);
 
+        if (parentView.findViewById(R.id.talk_scroll_land) != null) {
+            mTabletLand = true;
+            setLandLayout();
+        } else {
+            setNormalLayout();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
+        }
+
+        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(createShareTalkIntent());
+        }
+    }
+
+    private void setLandLayout(){
+        RelativeLayout sidebar = (RelativeLayout)parentView.findViewById(R.id.sidebar);
+        sidebar.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
+
+        ImageView speakerAvatar = (ImageView)parentView.findViewById(R.id.talk_avatar);
+        Picasso picasso = Picasso.with(getActivity());
+        picasso.load(mSpeaker.getPictureUrl())
+                .fit()
+                .centerCrop()
+                .into(speakerAvatar);
+
+        TextView speakerName = (TextView)parentView.findViewById(R.id.speaker_name);
+        speakerName.setText(mSpeaker.getName());
+    }
+
+    private void setNormalLayout() {
         // find header talk details views
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
         TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
@@ -153,12 +191,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         mHeaderTalkDetails.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            Window window = ((SingleFragmentActivity)getActivity()).getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(FullStackFestConfig.getConfDarkColor(mTalk));
-        }
-        
         mSpeakerName.setText(mSpeaker.getName());
         Picasso picasso = Picasso.with(getActivity());
 //        picasso.setIndicatorsEnabled(BuildConfig.DEBUG);
@@ -178,11 +210,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         mParallaxImageHeight = getParallaxImageHeight();
 
 //        mToolbarView.setVisibility(View.GONE);
-
-        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(createShareTalkIntent());
-        }
     }
 
     @Override
