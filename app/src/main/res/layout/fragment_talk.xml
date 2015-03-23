@@ -18,38 +18,33 @@
             android:layout_height="200dp"
             />
 
+
         <LinearLayout
-            android:id="@+id/talk_header"
-            android:layout_height="wrap_content"
+            android:id="@+id/talk_title_data"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/talk_title_data"
-                android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:background="#FFC107">
+            <TextView
+                android:id="@+id/talk_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFC107">
-                <TextView
-                    android:id="@+id/talk_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="72dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="20dp"
-                    android:text="@string/hello_blank_fragment"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    />
-                <TextView
-                    android:id="@+id/talk_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="72dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="16dp"
-                    android:textSize="16sp"
-                    android:text="DX, 10:00 - 11:00"/>
-            </LinearLayout>
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="20dp"
+                android:text="@string/hello_blank_fragment"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/talk_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="72dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:textSize="16sp"
+                android:text="DX, 10:00 - 11:00"/>
         </LinearLayout>
 
         <LinearLayout

@@ -131,7 +131,6 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         // find header talk details views
         View statusbar = getActivity().findViewById(R.id.statusbar);
         mHeaderTalkDetails = (LinearLayout)getActivity().findViewById(R.id.header_talk_details);
-        LinearLayout headerTalkData = (LinearLayout)getActivity().findViewById(R.id.header_talk_title_data);
         TextView headerTalkTitle = (TextView)getActivity().findViewById(R.id.header_talk_title);
         TextView headerTalkTime = (TextView)getActivity().findViewById(R.id.header_talk_time);
 
@@ -160,7 +159,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
         headerTalkTime.setText(mSpeaker.getName());
 
         mTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
-        headerTalkData.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
+        mHeaderTalkDetails.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
         statusbar.setBackground(new ColorDrawable(FullStackFestConfig.getConfColor(mTalk)));
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
