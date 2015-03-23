@@ -174,6 +174,7 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
                 .fit()
                 .centerCrop()
                 .into(mSpeakerAvatar);
+        mSpeakerAvatar.setContentDescription(mSpeaker.getName());
         mTalkDescription.setText(Html.fromHtml(mTalk.getDescription()));
         speakerBio.setText(Html.fromHtml(mSpeaker.getBio()));
         speakerBio.setMovementMethod(LinkMovementMethod.getInstance());
