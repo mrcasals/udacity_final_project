@@ -1,17 +1,13 @@
 package com.codegram.conferences.fullstackfest;
 
 import android.support.v4.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,23 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codegram.conferences.fullstackfest.adapters.TalkListAdapter;
 import com.codegram.conferences.fullstackfest.data.DatabaseContract;
-import com.codegram.conferences.fullstackfest.labs.SpeakerLab;
-import com.codegram.conferences.fullstackfest.labs.TalkLab;
-import com.codegram.conferences.fullstackfest.models.Speaker;
-import com.codegram.conferences.fullstackfest.models.Talk;
 import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
-import com.makeramen.RoundedImageView;
-import com.makeramen.RoundedTransformationBuilder;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
-import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -76,6 +61,7 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
 
     TalkListAdapter mAdapter;
     String mTalkTag;
+    boolean mNeedsAutoUpdate = true;
 
     public static TalkListFragment newInstance(String talkTag) {
         Bundle args = new Bundle();
@@ -138,6 +124,7 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateRemoteData() {
+        Toast.makeText(getActivity(), "Updating data...", Toast.LENGTH_SHORT).show();
         FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
         fetchDataTask.execute();
     }
@@ -156,6 +143,10 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        if(mNeedsAutoUpdate && cursor.getCount() == 0) {
+            updateRemoteData();
+        }
+        mNeedsAutoUpdate = false;
         mAdapter.swapCursor(cursor);
     }
 

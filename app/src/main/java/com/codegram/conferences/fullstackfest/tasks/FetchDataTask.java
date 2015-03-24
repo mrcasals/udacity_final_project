@@ -64,7 +64,7 @@ public class FetchDataTask extends AsyncTask<Void, Void, JSONDataParser> {
     protected void onPostExecute(JSONDataParser parser) {
         TalkLab.get(mContext).setCollection(parser.getTalks());
         SpeakerLab.get(mContext).setCollection(parser.getSpeakers());
-        Toast.makeText(mContext, "Done refreshing!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Updated!", Toast.LENGTH_SHORT).show();
     }
 
     private void addToDatabase(JSONDataParser parser) {
