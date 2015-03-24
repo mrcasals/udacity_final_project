@@ -156,6 +156,12 @@ public class TalkFragment extends Fragment implements ObservableScrollViewCallba
 
         TextView speakerName = (TextView)parentView.findViewById(R.id.speaker_name);
         speakerName.setText(mSpeaker.getName());
+
+        TextView talkDescription = (TextView)parentView.findViewById(R.id.talk_description);
+        talkDescription.setText(Html.fromHtml(mTalk.getDescription()));
+
+        TextView speakerBio = (TextView)parentView.findViewById(R.id.speaker_bio);
+        speakerBio.setText(Html.fromHtml(mSpeaker.getBio()));
     }
 
     private void setNormalLayout() {
