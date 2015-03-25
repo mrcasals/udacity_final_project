@@ -38,8 +38,6 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         //create sections
         this.addSection(newSection("Talks", new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
-
-        this.addBottomSection(newSection("About", new SpeakerListFragment()).setSectionColor(Color.parseColor("#455A64")));
     }
 
     @Override
