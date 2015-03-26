@@ -42,14 +42,6 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         //create sections
         this.addSection(newSection("Talks", new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
-//        this.addSection(newSection("Speakers", new SpeakerListFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.FUTUREJS_COLOR)));
-
-        // ---------------------------------------------------
-        // set a subheader
-//        this.addSubheader("Subheader");
-
-        //create sections
-//        this.addSection(newSection("Sponsors", new TalkListFragment()).setSectionColor(Color.parseColor("#cddc39")));
 
         Intent mapIntent = createMapIntent();
         if(mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -57,8 +49,6 @@ public class ListActivity extends MaterialNavigationDrawer {
         } else {
             Log.d(LOG_TAG, "Couldn't call map intent, no map available");
         }
-
-        this.addBottomSection(newSection("About", new SpeakerListFragment()).setSectionColor(Color.parseColor("#455A64")));
     }
 
     private Intent createMapIntent() {
