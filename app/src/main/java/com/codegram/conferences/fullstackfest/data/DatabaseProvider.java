@@ -241,10 +241,46 @@ public class DatabaseProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        int count = super.bulkInsert(uri, values);
-        getContext().getContentResolver().notifyChange(uri, null);
-        getContext().getContentResolver().notifyChange(DatabaseContract.TalkEntry.CONTENT_URI, null);
-        return count;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int returnCount;
+
+        switch(match) {
+            case TALKS:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(DatabaseContract.TalkEntry.TABLE_NAME, null, value);
+                        if(_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case SPEAKERS:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(DatabaseContract.SpeakerEntry.TABLE_NAME, null, value);
+                        if(_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(DatabaseContract.TalkEntry.CONTENT_URI, null);
+                return returnCount;
+            default:
+                return super.bulkInsert(uri, values);
+        }
     }
 
     @Override
