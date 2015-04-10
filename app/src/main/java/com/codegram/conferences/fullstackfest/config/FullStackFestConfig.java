@@ -18,7 +18,8 @@ public class FullStackFestConfig {
     public static final String LATLONG = "41.389280,2.137002";
     public static final String VENUE_NAME = "Auditori AXA";
     public static final String[] TRACKS = new String[] {"ruby", "javascript"};
-    public static final String HASHTAG = "fullstackfest";
+    public static final String KEYWORD = "fullstackfest";
+    public static final String HASHTAG= "#" + KEYWORD;
 
     public static int getConfColor(Talk talk) {
         if(Arrays.asList(talk.getTags()).contains("ruby"))

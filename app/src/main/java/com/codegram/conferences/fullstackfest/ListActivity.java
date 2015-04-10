@@ -52,7 +52,7 @@ public class ListActivity extends MaterialNavigationDrawer {
 
         Intent socialIntent = createSocialIntent();
         if(socialIntent.resolveActivity(getPackageManager()) != null) {
-            this.addSection(newSection("Social", R.drawable.ic_action_forum, socialIntent));
+            this.addSection(newSection(FullStackFestConfig.HASHTAG, R.drawable.ic_action_forum, socialIntent));
         } else {
             Log.d(LOG_TAG, "Couldn't call browser intent, no twitter handler available");
         }
@@ -70,7 +70,7 @@ public class ListActivity extends MaterialNavigationDrawer {
     }
 
     private Intent createSocialIntent() {
-        Uri twitterHashtag = Uri.parse("https://twitter.com/search?q=" + FullStackFestConfig.HASHTAG);
+        Uri twitterHashtag = Uri.parse("https://twitter.com/search?q=" + FullStackFestConfig.KEYWORD);
         return new Intent(Intent.ACTION_VIEW, twitterHashtag);
     }
 
