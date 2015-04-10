@@ -49,6 +49,13 @@ public class ListActivity extends MaterialNavigationDrawer {
         } else {
             Log.d(LOG_TAG, "Couldn't call map intent, no map available");
         }
+
+        Intent socialIntent = createSocialIntent();
+        if(socialIntent.resolveActivity(getPackageManager()) != null) {
+            this.addSection(newSection("Social", R.drawable.ic_action_forum, socialIntent));
+        } else {
+            Log.d(LOG_TAG, "Couldn't call browser intent, no twitter handler available");
+        }
     }
 
     private Intent createMapIntent() {
@@ -60,6 +67,11 @@ public class ListActivity extends MaterialNavigationDrawer {
                 .build();
         mapIntent.setData(geolocation);
         return mapIntent;
+    }
+
+    private Intent createSocialIntent() {
+        Uri twitterHashtag = Uri.parse("https://twitter.com/search?q=" + FullStackFestConfig.HASHTAG);
+        return new Intent(Intent.ACTION_VIEW, twitterHashtag);
     }
 
     @Override
