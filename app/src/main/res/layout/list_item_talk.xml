@@ -37,6 +37,10 @@
         android:text="Secondary 1 text"/>
 
     <include layout="@layout/separator"
-             android:id="@+id/include"/>
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginStart="72dp"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
