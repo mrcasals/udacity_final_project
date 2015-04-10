@@ -2,4 +2,6 @@
 <resources>
     <string name="maps_api_key">AIzaSyAqjIDLWlvEDl_AN9HxhJs9tGLpAAWMSZs</string>
     <string name="crashlytics_api_key">3b98ce5b0b5c8e5c5d5ca35a955e5e5131c3ef49</string>
+    <string name="parse_app_id">SX6kAhfIRuYVOTrDY9RHsvLe6bHQyNlvg7XBDm5h</string>
+    <string name="parse_client_key">3BnBuQuoTd6nesQqblTqVz6nZ5BjOvlPyBv2XZc8</string>
 </resources>
