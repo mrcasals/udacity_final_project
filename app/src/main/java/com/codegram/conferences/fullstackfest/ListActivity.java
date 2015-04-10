@@ -41,11 +41,11 @@ public class ListActivity extends MaterialNavigationDrawer {
         this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
 
         //create sections
-        this.addSection(newSection("Talks", new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
+        this.addSection(newSection("Talks", R.drawable.ic_action_today, new TalkTabsFragment()).setSectionColor(Color.parseColor(FullStackFestConfig.BARUCO_COLOR)));
 
         Intent mapIntent = createMapIntent();
         if(mapIntent.resolveActivity(getPackageManager()) != null) {
-            this.addSection(newSection("Map", mapIntent).setSectionColor(Color.parseColor("#ff9800")));
+            this.addSection(newSection("Map", R.drawable.ic_action_map, mapIntent));
         } else {
             Log.d(LOG_TAG, "Couldn't call map intent, no map available");
         }
