@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
 import com.parse.Parse;
+import com.parse.ParseAnalytics;
 import com.parse.ParsePushBroadcastReceiver;
 
 import org.json.JSONException;
@@ -26,10 +27,17 @@ public class CustomReceiver extends ParsePushBroadcastReceiver {
 
         if(pushData != null && pushData.has("customAction")) {
             Log.d("CustomReceiver", "custom action!");
+            ParseAnalytics.trackAppOpenedInBackground(intent);
             FetchDataTask task = new FetchDataTask(context);
             task.execute();
         } else {
             super.onPushReceive(context, intent);
         }
+    }
+
+    @Override
+    protected void onPushOpen(Context context, Intent intent) {
+        ParseAnalytics.trackAppOpenedInBackground(intent);
+        super.onPushOpen(context, intent);
     }
 }
