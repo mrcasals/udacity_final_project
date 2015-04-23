@@ -28,6 +28,7 @@ public class JSONDataParser {
     private final String JSON_EMBEDDED = "_embedded";
     private final String JSON_TALKS = "talks";
     private final String JSON_SPEAKER = "speaker";
+    private final String JSON_SPEAKERS = "speakers";
     private final String TALK_TITLE = "title";
     private final String TALK_DESCRIPTION = "description";
     private final String TALK_PICTURE = "picture";
@@ -116,7 +117,13 @@ public class JSONDataParser {
             String bio;
 
             JSONObject talk = talks.getJSONObject(i);
-            JSONObject speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONObject(JSON_SPEAKER);
+            JSONObject speaker = null;
+
+            if(talk.getJSONObject(JSON_EMBEDDED).has(JSON_SPEAKER)) {
+                speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONObject(JSON_SPEAKER);
+            } else {
+                speaker = talk.getJSONObject(JSON_EMBEDDED).getJSONArray(JSON_SPEAKERS).getJSONObject(0);
+            }
             name = speaker.getString(SPEAKER_NAME);
 
             if(speaker.isNull(SPEAKER_PICTURE)) {
