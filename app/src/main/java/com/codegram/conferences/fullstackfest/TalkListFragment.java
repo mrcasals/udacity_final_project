@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.codegram.conferences.fullstackfest.adapters.TalkListAdapter;
 import com.codegram.conferences.fullstackfest.data.DatabaseContract;
-import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
+import com.codegram.conferences.fullstackfest.services.FetchDataService;
 
 /**
  * A fragment representing a list of Items.
@@ -125,8 +125,8 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void updateRemoteData() {
         Toast.makeText(getActivity(), "Updating data...", Toast.LENGTH_SHORT).show();
-        FetchDataTask fetchDataTask = new FetchDataTask(getActivity());
-        fetchDataTask.execute();
+        FetchDataService fetchDataService = new FetchDataService();
+        fetchDataService.startFetching(getActivity());
     }
 
     @Override

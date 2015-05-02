@@ -8,10 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codegram.conferences.fullstackfest.config.FullStackFestConfig;
 
-import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
+import com.codegram.conferences.fullstackfest.services.FetchDataService;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -93,7 +94,8 @@ public class ListActivity extends MaterialNavigationDrawer {
     }
 
     private void updateRemoteData() {
-        FetchDataTask fetchDataTask = new FetchDataTask(this);
-        fetchDataTask.execute();
+        Toast.makeText(this, "Updating data...", Toast.LENGTH_SHORT).show();
+        FetchDataService fetchDataService = new FetchDataService();
+        fetchDataService.startFetching(this);
     }
 }

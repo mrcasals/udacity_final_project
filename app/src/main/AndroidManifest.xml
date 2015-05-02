@@ -11,19 +11,20 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:protectionLevel="signature"
-                android:name="com.codegram.conferences.fullstackfest.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.codegram.conferences.fullstackfest.permission.C2D_MESSAGE" />
-    <!-- /Parse dependencies -->
 
+    <permission
+        android:name="com.codegram.conferences.fullstackfest.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.codegram.conferences.fullstackfest.permission.C2D_MESSAGE" />
+
+    <!-- /Parse dependencies -->
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/FullStackFest"
-        android:name=".MyApplication"
-        >
-
+        android:theme="@style/FullStackFest" >
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="3b98ce5b0b5c8e5c5d5ca35a955e5e5131c3ef49" /> <!-- TODO: CHANGE BEFORE RELEASE! -->
@@ -47,27 +48,30 @@
         </activity>
 
         <provider
-            android:authorities="com.codegram.conferences.fullstackfest"
-            android:name=".data.DatabaseProvider" />
+            android:name=".data.DatabaseProvider"
+            android:authorities="com.codegram.conferences.fullstackfest" />
 
         <!-- Parse dependencies -->
         <service android:name="com.parse.PushService" />
-        <receiver android:name="com.parse.ParseBroadcastReceiver">
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".CustomReceiver"
-                  android:exported="false">
+        <receiver
+            android:name=".CustomReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-                  android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -76,6 +80,10 @@
             </intent-filter>
         </receiver>
         <!-- /Parse dependencies -->
+        <service
+            android:name=".services.FetchDataService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

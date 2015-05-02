@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.codegram.conferences.fullstackfest.tasks.FetchDataTask;
+import com.codegram.conferences.fullstackfest.services.FetchDataService;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParsePushBroadcastReceiver;
@@ -28,8 +28,8 @@ public class CustomReceiver extends ParsePushBroadcastReceiver {
         if(pushData != null && pushData.has("customAction")) {
             Log.d("CustomReceiver", "custom action!");
             ParseAnalytics.trackAppOpenedInBackground(intent);
-            FetchDataTask task = new FetchDataTask(context);
-            task.execute();
+            FetchDataService fetchDataService = new FetchDataService();
+            fetchDataService.startFetching(context);
         } else {
             super.onPushReceive(context, intent);
         }
