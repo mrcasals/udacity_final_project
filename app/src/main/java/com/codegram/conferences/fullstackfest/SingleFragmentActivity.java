@@ -29,7 +29,6 @@ public abstract class SingleFragmentActivity extends ActionBarActivity{
 
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeButtonEnabled(true);
 
         if(fragment == null) {
             fragment = createFragment();
