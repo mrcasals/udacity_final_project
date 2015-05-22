@@ -1,5 +1,7 @@
 package com.codegram.conferences.fullstackfest;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.v4.app.LoaderManager;
 import android.content.Intent;
 import android.support.v4.content.Loader;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import com.codegram.conferences.fullstackfest.adapters.TalkListAdapter;
 import com.codegram.conferences.fullstackfest.data.DatabaseContract;
 import com.codegram.conferences.fullstackfest.services.FetchDataService;
+
+import java.net.InetAddress;
 
 /**
  * A fragment representing a list of Items.
@@ -62,6 +66,10 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
     TalkListAdapter mAdapter;
     String mTalkTag;
     boolean mNeedsAutoUpdate = true;
+
+    public TalkListFragment() {
+        setHasOptionsMenu(true);
+    }
 
     public static TalkListFragment newInstance(String talkTag) {
         Bundle args = new Bundle();
@@ -124,6 +132,10 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateRemoteData() {
+        if(!isInternetAvailable()) {
+            Toast.makeText(getActivity(), "No Internet connection available", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(getActivity(), "Updating data...", Toast.LENGTH_SHORT).show();
         FetchDataService fetchDataService = new FetchDataService();
         fetchDataService.startFetching(getActivity());
@@ -167,5 +179,10 @@ public class TalkListFragment extends Fragment implements LoaderManager.LoaderCa
                 new String[] {"%" + mTalkTag + "%"},
                 sortOrder
                 );
+    }
+
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (cm.getActiveNetworkInfo() != null);
     }
 }

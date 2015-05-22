@@ -75,27 +75,4 @@ public class ListActivity extends MaterialNavigationDrawer {
         return new Intent(Intent.ACTION_VIEW, twitterHashtag);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_talks_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_refresh:
-                updateRemoteData();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updateRemoteData() {
-        Toast.makeText(this, "Updating data...", Toast.LENGTH_SHORT).show();
-        FetchDataService fetchDataService = new FetchDataService();
-        fetchDataService.startFetching(this);
-    }
 }

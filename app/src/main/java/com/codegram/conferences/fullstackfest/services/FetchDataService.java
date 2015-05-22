@@ -22,6 +22,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -53,7 +54,6 @@ public class FetchDataService extends IntentService {
             JSONDataParser parser = getData();
             TalkLab.get(this).setCollection(parser.getTalks());
             SpeakerLab.get(this).setCollection(parser.getSpeakers());
-            Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -136,4 +136,5 @@ public class FetchDataService extends IntentService {
                 null
         );
     }
+
 }
